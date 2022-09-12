@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Reevaluciones{% endblock %}
+{% block content %}
+{% include 'consultorio/includes/reevaluacion_menu.html' %}
+
+
+<form action="{% url 'consultorio:search_results_reev' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+<main role="main">
+  <div class="container mb-4">
+    {% for pac in reevaluacion_list %}
+      <div class="row mt-3">
+        <div class="col-md-9 mx-auto">
+          <h2 style = "color:rgba(0, 0, 128, 0.805);"  class="mb-4">  {{pac.paciente}}</h2>
+          <div>
+            <p>{{pac.immediate_background|striptags|safe|truncatechars:"200"}}</p>
+            {% if request.user.is_staff %}
+            <p><a href="{% url 'consultorio:reevaluacion' pac.id %}">Resumen</a>
+              | <a href="{% url 'consultorio:Actualizar_reevaluacion' pac.id %}">Editar</a>
+              | <a href="{% url 'consultorio:eliminar reevaluacion' pac.id %}">Eliminar</a>
+              
+              
+              
+              
+                
+              <!--  | <a href="#">Borrar</a>
+              -->
+              {% endif %}
+              
+              
+              
+            
+              <!--
+              {% if request.user.is_staff %}
+                | <a href="#">Editar</a>
+                | <a href="#">Borrar</a>
+              {% endif %}
+              -->
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+  </div>
+</main>
+{% endblock %}

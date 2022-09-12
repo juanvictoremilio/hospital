@@ -1,0 +1,138 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{object.name}}{% endblock %}
+{% block content %}
+{% include 'consultorio/includes/top_menu.html' %}
+<main role="main">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto">
+        <h2 class="section-heading mb-4">Resumen Clínico</h2>
+        <h4 class="section-heading mb-4">{{paciente.name}}</h4>
+        <div>
+          <p>Edad: {{paciente.age}}</p>
+           ANTECEDENTES INMEDIATOS: <p>{{paciente.immediate_background|linebreaks|safe}} </p>
+           OTROS ANTECEDENTES: <p>{{paciente.otras_enf|linebreaks}}</p>
+           EXPLORACION FISICA: <p>{{paciente.actual_situation |linebreaks}}</p>
+           SIGNOS VITALES: <p>FC {{paciente.fc}}, &nbsp; &nbsp;   TA {{paciente.tension_sistolica}}/{{paciente.tension_diastolica}}, &nbsp; &nbsp;    
+            PAM: {{paciente.pam}}, &nbsp; &nbsp;   FR: {{paciente.fr}},  &nbsp; &nbsp;  Temp: {{paciente.temp}}, &nbsp; &nbsp;   Sa02: {{paciente.saturation}}, &nbsp; &nbsp;
+            Dextrostix: {{paciente.dextrostix}}, &nbsp; &nbsp;   A1c: {{paciente.a1c}},  &nbsp; &nbsp;  Peso: {{paciente.peso}}, &nbsp; &nbsp;   Estatura: {{paciente.estatura}}, &nbsp; &nbsp;
+            IMC: {{paciente.imc}}, &nbsp; &nbsp;   Clasificación Masa Corporal: {{paciente.climc}}, &nbsp; &nbsp;   ASC: {{paciente.asc}}, &nbsp; &nbsp;   
+            Per. Abdominal: {{paciente.per_abdominal}} cms. </p>
+           OBSERVACIONES: <p>{{paciente.obs | linebreaks}}</p>
+           DXS: <p>{{paciente.diagnosis | linebreaks}}</p>
+           MANEJO: <p>{{paciente.txs | linebreaks}}</p>
+           Fecha de Realización: <p>{{ paciente.timestamp }}</p>
+           Ultima Actualización: <p>{{ paciente.update }}</p>
+
+           
+          {% if request.user.is_staff %}
+          
+            <p><a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">Editar</a></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+{% include 'consultorio/includes/historia_clinica.html' %}
+<main role="main">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto">
+        <h2 class="section-heading mb-4" ALIGN="center">HISTORIA CLINICA</h2>
+        <h3 class="section-heading mb-4" >Identificación</h3>
+        <h4 class="section-heading mb-4">{{paciente.name}}</h4>
+        <div>
+          <p><b>Género:</b>{{paciente.gender}}, &nbsp; &nbsp; &nbsp;
+             <b>Edad:</b> {{paciente.age}},&nbsp; &nbsp; &nbsp;
+             <b>Nacionalidad y Lugar de Nacimiento:</b> {{paciente.nationality}} &nbsp; &nbsp; &nbsp;
+             <b>Etnia:</b> {{paciente.etnia}}</p>
+          <p><b>Escolaridad:</b> {{paciente.scholarship}}, &nbsp; &nbsp; &nbsp;
+             <b>Empleo:</b> {{paciente.job}}, &nbsp; &nbsp; &nbsp;
+             <b>Religión: </b>{{paciente.religion}}, &nbsp; &nbsp; &nbsp;
+             <b>Deportes:</b> {{paciente.sport}}, &nbsp; &nbsp; &nbsp;
+          <p><b>Estado Civil:</b> {{paciente.civil_status}},
+             <b>Domicilio:</b> {{paciente.adress}}, &nbsp; &nbsp; &nbsp;
+             <b>Email:</b> {{paciente.email}}, &nbsp; &nbsp; &nbsp;
+             <b>Teléfono: </b>{{paciente.phone}}</p>
+          <p><b>Derechohabiencia:</b> {{paciente.entitlement}}, &nbsp; &nbsp; &nbsp;
+             <b>Otra Derechohabiencia: </b>{{paciente.specify}},&nbsp; &nbsp; &nbsp;
+          <p class="section-heading mb-10"><b>Aseguradora:</b> {{paciente.insurance}}</p>
+          
+          <br>
+
+          <h3 class="section-heading mb-4">Antecedentes inmediatos o Padecimiento Actual</h3>         
+          <p> {{paciente.immediate_background|linebreaks|safe}} </p>
+
+          <br>
+          
+          <h3 class="section-heading mb-4">Antecedentes Personales</h3>
+           <p>Tabaquismo: {{paciente.smoking}}, &nbsp; &nbsp;
+           Alcoholismo: {{paciente.alcohol}}, &nbsp; &nbsp;
+           Adicciones: {{paciente.drugs_adictions}} ,&nbsp; &nbsp;
+           Alergias: {{paciente.allergies}}, &nbsp; &nbsp;
+           Dislipidemia: {{paciente.dislipidemia}}, &nbsp; &nbsp;
+           Diabetes: {{paciente.dm}}, &nbsp; &nbsp;
+           HTA: {{paciente.hta}}, &nbsp; &nbsp;
+           Infartos o angina de pecho: {{pacienteinf_ang_de_pecho}}, &nbsp; &nbsp;
+           Eventos Cerebrovasculares: {{paciente.evc}}, &nbsp; &nbsp;
+           Insuficiencia vascular periférica: {{paciente.ivp}}, &nbsp; &nbsp;
+           Enfermedad Pulmonar Obstructiva Crónica: {{paciente.EPOC}},&nbsp; &nbsp;
+           Cáncer: {{paciente.cancer}},</P>
+
+           <h3 class="section-heading mb-4">Complemento Otros antecedentes y Enfermedades</h3>
+          <p>{{paciente.otras_enf}}</p>
+
+          <br>
+          
+          <h3 class="section-heading mb-4" >Exploración Física</h3>
+          <p>{{paciente.actual_situation |linebreaks}}</p>
+
+          <br>
+
+           <b>SIGNOS VITALES:</b> <p>FC {{paciente.fc}}, &nbsp; &nbsp;   TA {{paciente.tension_sistolica}}/{{paciente.tension_diastolica}}, &nbsp; &nbsp;    
+            PAM: {{paciente.pam}}, &nbsp; &nbsp;   FR: {{paciente.fr}},  &nbsp; &nbsp;  Temp: {{paciente.temp}}, &nbsp; &nbsp;   Sa02: {{paciente.saturation}}, &nbsp; &nbsp;
+            Dextrostix: {{paciente.dextrostix}}, &nbsp; &nbsp;   A1c: {{paciente.a1c}},  &nbsp; &nbsp;  Peso: {{paciente.peso}}, &nbsp; &nbsp;   Estatura: {{paciente.estatura}}, &nbsp; &nbsp;
+            IMC: {{paciente.imc}}, &nbsp; &nbsp;   Clasificación Masa Corporal: {{paciente.climc}}, &nbsp; &nbsp;   ASC: {{paciente.asc}}, &nbsp; &nbsp;   
+            Per. Abdominal: {{paciente.per_abdominal}} cms. </p>
+
+            <br>
+
+            <h3 lass="section-heading mb-4">OBSERVACIONES</h3>
+             <p>{{paciente.obs | linebreaks}}</p>
+
+             <br>
+
+             <h3 class="section-heading mb-4">DIAGNOSTICOS</h3>
+             <p>{{paciente.diagnosis | linebreaks}}</p>
+
+             <br>
+
+           <h3 class="section-heading mb-4">MANEJOS Y TRATAMIENTOS</h3>
+           <p>{{paciente.txs | linebreaks}}</p>
+
+           <br>
+
+           <h3 class="section-heading mb-4">ADENDUMS</h3>
+           <P>{{paciente.adendums | linebreaks}}</P>
+
+            <br>
+
+           <p><b>Fecha de Realización:</b> {{ paciente.timestamp }}</p>
+           <p><b>Última Actualización:</b> {{ paciente.update }}</p>
+
+           
+          {% if request.user.is_staff %}
+          
+           
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+

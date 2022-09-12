@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{object.paciente}}{% endblock %}
+{% block content %}
+{% include 'consultorio/includes/reevaluacion_menu.html'%}
+<main role="main">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto">
+        <h2 class="section-heading mb-4">Resumen</h2>
+        <h4 class="section-heading mb-4">{{object.paciente}}</h4>
+        <div>
+          <p>Edad: {{object.age}}</p>
+           ANTECEDENTES INMEDIATOS: <p>{{object.immediate_background|linebreaks|safe}} </p>
+           DIAGNOSTICOS PREVIOS: <P>{{object.dxs_previos | linebreaks}}</P>
+           SITUACION ACTUAL Y EXPLORACION FISICA: <p>{{object.actual_situation |linebreaks}}</p>
+           SIGNOS VITALES: <p>FC {{object.fc}}, &nbsp; &nbsp; &nbsp; TA {{object.tension_sistolica}}/{{object.tension_diastolica}}, &nbsp; &nbsp; &nbsp;     
+            PAM: {{object.pam}}, &nbsp; &nbsp; &nbsp;FR: {{object.fr}},&nbsp; &nbsp; &nbsp;Temp: {{object.temp}}, &nbsp; &nbsp; &nbsp;    Sa02: {{object.saturation}}, 
+            Dextrostix: {{object.dextrostix}},&nbsp; &nbsp; &nbsp;  A1c: {{object.a1c}}, &nbsp; &nbsp; &nbsp;Peso: {{object.peso}}, &nbsp; &nbsp; &nbsp;Estatura: {{object.estatura}}, &nbsp; &nbsp; &nbsp;
+            IMC: {{object.imc}},&nbsp; &nbsp; &nbsp; Clasificación Masa Corporal: {{object.climc}}, &nbsp; &nbsp; &nbsp; ASC: {{object.asc}},   
+            Per. Abdominal: {{object.per_abdominal}} cms. </p>
+           OBSERVACIONES: <p>{{object.obs | linebreaks}}</p>
+           DXS: <p>{{object.diagnosis | linebreaks}}</p>
+           MANEJO: <p>{{object.txs | linebreaks}}</p>
+           <p><b>Fecha de Registro de Reevaluación: </b>{{object.timestamp}}</p>
+           <p><b>Actualización: </b>{{object.update}}</p>
+           
+           
+           
+          {% if request.user.is_staff %}
+          
+            <p><a href="{% url 'consultorio:Actualizar_reevaluacion' object.id %}">Editar</a></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

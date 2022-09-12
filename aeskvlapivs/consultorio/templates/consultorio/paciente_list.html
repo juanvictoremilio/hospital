@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Páginas{% endblock %}
+{% block content %}
+{% include 'consultorio/includes/top_menu.html' %}
+
+<form action="{% url 'consultorio:search_results' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+<main role="main">
+  <div class="container mb-4">
+    {% for paciente in paciente_list %}
+      <div class="row mt-3">
+        <div class="col-md-9 mx-auto">
+          <h2 style = "color:rgba(0, 0, 128, 0.805);"  class="mb-4">  {{paciente.name}}</h2>
+          <div>
+            <p>{{paciente.immediate_background|striptags|safe|truncatechars:"200"}}</p>
+            {% if request.user.is_staff %}
+            <p><a href="{% url 'consultorio:paciente' paciente.id paciente.name|slugify %}">Resumen Clínico / Historia Clínica</a>
+              | <a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">Editar</a>
+              | <a href="{% url 'consultorio:eliminar paciente' paciente.id %}">Eliminar</a>
+              
+                
+              <!--  | <a href="#">Borrar</a>
+              -->
+              {% endif %}
+              
+              
+              
+            
+              <!--
+              {% if request.user.is_staff %}
+                | <a href="#">Editar</a>
+                | <a href="#">Borrar</a>
+              {% endif %}
+              -->
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+  </div>
+</main>
+{% endblock %}
