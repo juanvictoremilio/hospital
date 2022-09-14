@@ -3,7 +3,7 @@ from tkinter import Text
 from unicodedata import name
 from django.contrib import admin
 from django.forms import TextInput
-from .models import Paciente, Reevaluacion, Urgencias
+from .models import Paciente, Reevaluacion, Urgencias, Urgencias_Reevaluaciones
 from django import forms
 
 # Register your models here.
@@ -35,6 +35,14 @@ class UrgenciasAdmin(admin.ModelAdmin):
 	readonly_fields = ('timestamp', 'update')
 	search_fields = ('paciente__name',)
 
+class UrgreevAdmin(admin.ModelAdmin):
+	list_display = ['paciente', 'edad', 'dxs_previos',]
+	autocomplete_fields = ('paciente',)
+	search_fields = ('paciente__name',)
+
+
+
+
 class Media:
         css = {
             'all': ('consultorio/css/custom_ckeditor.css',)
@@ -45,6 +53,7 @@ class Media:
 admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(Reevaluacion, ReevaluacionAdmin)
 admin.site.register(Urgencias, UrgenciasAdmin)
+admin.site.register(Urgencias_Reevaluaciones, UrgreevAdmin)
 
 
 

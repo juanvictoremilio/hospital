@@ -3,6 +3,7 @@ from ast import Break, Continue, If, Return
 from email.policy import default
 import os
 from datetime import date
+from sre_parse import Verbose
 from tokenize import blank_re
 from typing import Any, Type
 from django.core.files.storage import FileSystemStorage
@@ -520,7 +521,7 @@ class Urgencias(models.Model):
     (Extension_anormal, 2), (Ausencia_respuesta, 1),]
     Respuesta_Motora = models.PositiveSmallIntegerField(choices=RESP_MOTORA, default=1, blank=True, null=True, help_text='Obedece órdenes 6; Localiza dolor 5; Retirada al dolor 4; Flexión anormal 3; Extensión anormal 2; Ausencia de Respuesta 1.')
 
-    ESCALA_DE_GLASGOW = models.PositiveSmallIntegerField(blank=True, null=True, help_text='sume los parámetros')
+    ESCALA_DE_GLASGOW = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
 
     expl = models.TextField(verbose_name='Complemente Exploración', blank=True, null=True)
 
@@ -670,7 +671,6 @@ class Urgencias(models.Model):
 # REEVALUACIONES DE URGENCIAS
 
 class Urgencias_Reevaluaciones(models.Model):
-    ev_1 = 'Primera Evaluación'
     ev_2 = 'Segunda Evaluación'
     ev_3 = 'Tercera Evaluación'
     ev_4 = 'Cuarta Evaluación'
@@ -678,7 +678,7 @@ class Urgencias_Reevaluaciones(models.Model):
     ev_6 = 'Sexta Evaluación'
     ev_7 = 'Séptima Evaluación'
     ev_8 = 'Octava Evaluación'
-    REEV_SECS = [(ev_1, 'Primera Evaluación'), (ev_2, 'Segunda Evaluación'), (ev_3, 'Tercera Evalaución'),
+    REEV_SECS = [(ev_2, 'Segunda Evaluación'), (ev_3, 'Tercera Evalaución'),
     (ev_4, 'Cuarta Evaluación'), (ev_5, 'Quinta Evaluación'), (ev_6, 'Sexta Evaluación'), (ev_7, 'Séptima Evaluación'),
     (ev_8, 'Octava Evaluación')]
 
@@ -688,31 +688,22 @@ class Urgencias_Reevaluaciones(models.Model):
     dxs_previos = models.TextField(blank=True, null=True)
     sit_actual = models.TextField(blank=True, null=True, verbose_name='Situación Actual')
 
-# REEXPLORACION FISICA
 
-    
+# REEXPLORACION FISICA
 
     POSITIVO = 'POS'
     NEGATIVO = 'NEG' 
     AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
     Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )
 
-    fr= models.IntegerField(default=0, blank=True, null=True, verbose_name='FR')
+    fr = models.IntegerField(default=0, blank=True, null=True, verbose_name='Frec. Resp')
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min')
-    FiO2 = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, default=.21, help_text= 'No escriba aquí')
     saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
-    SpFI = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
-
-    @property
-    def spfi(self):
-        return self.saturacion / self.FiO2
+    
 
         #unsupported operand type(s) for /: 'NoneType' and 'float'
 
-    @property
-    def sira(self):
-        if self.SpFI < 419 and self.fr > 20:
-            return 'Disfunción Respiratoria, Realice Gasometría'
+
     
     fc = models.IntegerField(default=0, blank=True, null=True, verbose_name='FC')
     tension_sistolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
@@ -754,25 +745,6 @@ class Urgencias_Reevaluaciones(models.Model):
     asc = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='ASC', help_text='No escriba aquí')
     per_abdominal = models.IntegerField(blank=True, null=True, verbose_name='Per. Abd en cms')
 
-    @property
-    def peso_urg1(Urgencias):
-        return Urgencias.peso
-
-    @property
-    def estatura_urg1(Urgencias):
-        return Urgencias.estatura
-
-    @property
-    def imc_urg1(Urgencias):
-        return Urgencias.imc
-
-    @property
-    def climc_urg1(Urgencias):
-        return Urgencias.climc
-    
-    @property
-    def asc_urg1(Urgencias):
-        return Urgencias.asc
 
     @property
     def fio2(self):
@@ -814,7 +786,7 @@ class Urgencias_Reevaluaciones(models.Model):
     (Extension_anormal, 2), (Ausencia_respuesta, 1),]
     Respuesta_Motora = models.PositiveSmallIntegerField(choices=RESP_MOTORA, default=1, blank=True, null=True, help_text='Obedece órdenes 6; Localiza dolor 5; Retirada al dolor 4; Flexión anormal 3; Extensión anormal 2; Ausencia de Respuesta 1.')
 
-    ESCALA_DE_GLASGOW = models.PositiveSmallIntegerField(blank=True, null=True, help_text='sume los parámetros')
+    ESCALA_DE_GLASGOW = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
 
     @property
     def glasgow(self):
@@ -831,24 +803,79 @@ class Urgencias_Reevaluaciones(models.Model):
             return 'Si paciente no es de Trauma: qSOFA indica que hay que descartar Sepsis'
 
 
+# PARAMETROS VENTILADOR MECANICO
+    VAC = 'VAC'
+    PAC = 'PAC'
+    VSIMC = 'VSIMC'
+    PSIMC = 'PSIMC'
+    Psup = 'Psup'
+    MOD = [(VAC, 'VAC'), (PAC, 'PAC'), (VSIMC, 'VSIMC'), (PSIMC, 'PSIMC'), (Psup, 'Psup')]
+    
+    mode = models.CharField(max_length=7, choices=MOD, blank=True, null=True, verbose_name='Modo Ventilatorio')
+    
+    FrecResp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Frec, Resp.')
+    FrIO2 = models.FloatField(blank=True, null=True, default=.21)
+    Vt = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Vol. Corriente (Vt)')
+    PEEP = models.PositiveSmallIntegerField(blank=True, null=True,default=1)
+    Sens = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=2)
+    Pinsp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Presion Insp')
+    Tinsp = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2, verbose_name='Tiempo Insp (Peak Flow)')
+
+    CAMPO1 = 1
+    CAMPO2 = 2
+    CAMPO3 = 3
+    CAMPO4 = 4
+    CAMPOS = [(CAMPO1, 1), (CAMPO2, 2), (CAMPO3, 3), (CAMPO4, 4)]
+    Rx_Torax = models.PositiveSmallIntegerField(choices=CAMPOS, blank=True, null=True, verbose_name='Cuadrantes Afectados en Rx de Tórax')
+
+    lung_compl = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Complianza Pulmonar', help_text='No esciba aquí')
+    @property
+    def compliance(self):
+        return self.Vt / self.Pinsp
+
+    pit = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Presión Intratorácica Total', help_text='No escriba aquí, OJO: Son Kgs.')
+    @property
+    def PresionIT(self):
+        if self.Rx_Torax == None:
+            return self.Pinsp *70
+
+        if self.Rx_Torax == 1:
+            return self.Pinsp * 60
+
+        elif self.Rx_Torax == 2:
+            return self.Pinsp * 50
+
+        elif self.Rx_Torax == 3:
+            return self.Pinsp * 28
+
+        elif self.Rx_Torax == 4:
+            return self.Pinsp * 21
+
+
+# GASES ARTERIALES
+
+
 
 
 
     def save(self):
-        self.peso = self.estatura_urg1
-        self.estatura =self.estatura_urg1
         self.pam = self.presion_media
-        self.FiO2 = self.fio2
-        self.SpFI = self.spfi
-        self.imc = self.imc_urg1
-        self.asc = self.asc_urg1
-        self.climc = self.imc_urg1
         self.ESCALA_DE_GLASGOW = self.glasgow
         self.NEUROLOGICO = self.consid
-        self.RESPIRATORIO = self.sira
         self.HEMODINAMICO = self.shock, self.hta
         self.INFECCIOSO = self.qsofa
+        self.lung_compl = self.compliance
+        self.pit = self.PresionIT
         super(Urgencias_Reevaluaciones, self).save()
+
+
+    def __str__(self):
+        return self.paciente.name
+        
+
+    class Meta:
+               
+        verbose_name_plural='c) Urgencias, Reevaluaciones'
 
     
             
