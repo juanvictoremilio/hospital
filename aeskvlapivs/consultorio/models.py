@@ -851,11 +851,60 @@ class Urgencias_Reevaluaciones(models.Model):
         elif self.Rx_Torax == 4:
             return self.Pinsp * 21
 
-
 # GASES ARTERIALES
+    pH = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
+    pCO2 = models.PositiveSmallIntegerField(blank=True, null=True)
+    O2 = models.PositiveSmallIntegerField(blank=True, null=True)
+    HCO3 = models.PositiveSmallIntegerField(blank=True, null=True)
+    EB = models.PositiveSmallIntegerField(blank=True, null=True)
+    Lactato= models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
 
+# LABORATORIO HEMATOLOGICO
+    hb = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    hto = models.PositiveSmallIntegerField(blank=True, null=True)
+    leucocitos = models.PositiveSmallIntegerField(blank=True, null=True)
+    neutrofilos = models.PositiveSmallIntegerField(blank=True, null=True)
+    basofilos = models.PositiveSmallIntegerField(blank=True, null=True)
+    eosinofilos = models.PositiveSmallIntegerField(blank=True, null=True)
+    linfocitos = models.PositiveSmallIntegerField(blank=True, null=True)
 
+# LABORATORIO QS
+    glucosa = models.PositiveSmallIntegerField(blank=True, null=True)
+    Urea = models.DecimalField(blank=True, null=True, max_digits=6, decimal_places=2)
+    Creatinina = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    PCR = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    DHL = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    TGP = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    TGO = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    bilirrTot= models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
 
+#ELECTROLITOS
+    Na = models.PositiveSmallIntegerField(blank=True, null=True)
+    K = models.PositiveSmallIntegerField(blank=True, null=True)
+    Ca = models.PositiveSmallIntegerField(blank=True, null=True)
+    Mg = models.PositiveSmallIntegerField(blank=True, null=True)
+    P = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemento Exploración')
+
+    obs = models.TextField(blank=True, null=True, verbose_name='Observaciones')
+
+    reest_man = models.TextField(blank=True, null=True, verbose_name='Reestructuración o Cambios en el Manejo')
+
+    MEDINT = 'Medicina Interna'
+    CIR = 'Cirugía'
+    CARD = 'Cardiología'
+    NEUR = 'NEUROLOGÍA'
+    NEURQX = 'Neurocirugía'
+    ORT = 'Ortopedia'
+    GIN = 'Ginecología'
+    OTRO = 'Otro'
+    IC = [(MEDINT, 'Medicina Interna'), (CIR, 'Cirugía'), (CARD, 'Cardiología'), (NEUR, 'Neurología'), (NEURQX, 'Neurocirugía'),
+    (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (OTRO, 'Otro')]
+    interconsulta = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name='Fecha de Registro')
+    update = models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')
 
 
     def save(self):
@@ -874,12 +923,11 @@ class Urgencias_Reevaluaciones(models.Model):
         
 
     class Meta:
-               
-        verbose_name_plural='c) Urgencias, Reevaluaciones'
+        ordering = ('-timestamp',)  
+        verbose_name_plural='d) Urgencias, Evaluaciones Subsecuentes'
 
     
-            
-
+    
 
 
 
