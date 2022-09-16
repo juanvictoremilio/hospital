@@ -452,6 +452,8 @@ class Reevaluacion(models.Model):
 
 
 class Urgencias(models.Model):
+
+#IDENTIFICACION Y ANTECEDENTES
     nombre = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     edad = models.SmallIntegerField(default=0)
 
@@ -459,22 +461,26 @@ class Urgencias(models.Model):
 
     other_bkground = models.TextField(verbose_name='Otros Antecedentes')
 
-    tension_sistolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
-    tension_diastolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
-    pam = models.IntegerField(default=0, verbose_name='PAM', help_text='No escriba aquí')
-
-    POSITIVO = 'POS'
-    NEGATIVO = 'NEG' 
-    AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
-    Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )
-
-
-    fc = models.IntegerField(default=0, blank=True, null=True, verbose_name='FC')
+#RESPIRATORIO
     fr= models.IntegerField(default=0, blank=True, null=True, verbose_name='FR')
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min')
     FiO2 = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, default=.21, help_text= 'No escriba aquí')
     saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
     SpFI = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
+
+#HEMODINAMICO
+    POSITIVO = 'POS'
+    NEGATIVO = 'NEG' 
+    AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
+    Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )
+
+    fc = models.IntegerField(default=0, blank=True, null=True, verbose_name='FC')
+    tension_sistolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
+    tension_diastolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
+    pam = models.IntegerField(default=0, verbose_name='PAM', help_text='No escriba aquí')
+    
+
+# MAS SsVs
     dextrostix = models.IntegerField(blank=True, null=True, verbose_name='Dextrostix', default=0)
     temp =  models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Temp')
     peso = models.FloatField(blank=True, null=True, default=0, help_text='Si no puede pesar al paciente, calcule un aproximado') 
@@ -485,7 +491,7 @@ class Urgencias(models.Model):
     per_abdominal = models.IntegerField(blank=True, null=True, verbose_name='Per. Abd en cms')
 
 
-    #COMPONENTE NEUROLOGICO
+#COMPONENTE NEUROLOGICO
     A = 'Alerta'
     V = 'Respuesta Verbal'
     P = 'Respuesta al Dolor'
@@ -682,29 +688,92 @@ class Urgencias_Reevaluaciones(models.Model):
     (ev_4, 'Cuarta Evaluación'), (ev_5, 'Quinta Evaluación'), (ev_6, 'Sexta Evaluación'), (ev_7, 'Séptima Evaluación'),
     (ev_8, 'Octava Evaluación')]
 
+#IDENTIFICACION Y ANTECEDENTES
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     edad = models.SmallIntegerField(default=0)
     evaluacion_sec = models.CharField(max_length=50, choices=REEV_SECS, blank=True, null=True, verbose_name='Evaluación Subsecuente')
     dxs_previos = models.TextField(blank=True, null=True)
     sit_actual = models.TextField(blank=True, null=True, verbose_name='Situación Actual')
 
-
-# REEXPLORACION FISICA
-
+#RESPIRATORIO
+    fr = models.IntegerField(default=0, blank=True, null=True, verbose_name='Frec. Resp')
+    O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min si es el caso')
+    saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
+    
     POSITIVO = 'POS'
     NEGATIVO = 'NEG' 
     AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
-    Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )
-
-    fr = models.IntegerField(default=0, blank=True, null=True, verbose_name='Frec. Resp')
-    O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min')
-    saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
-    
+    vent_mec = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE, verbose_name='Ventilación Mecánica')
 
         #unsupported operand type(s) for /: 'NoneType' and 'float'
-
-
+    # PARAMETROS VENTILADOR MECANICO
+    VAC = 'VAC'
+    PAC = 'PAC'
+    VSIMC = 'VSIMC'
+    PSIMC = 'PSIMC' 
+    Psup = 'Psup'
+    MOD = [(VAC, 'VAC'), (PAC, 'PAC'), (VSIMC, 'VSIMC'), (PSIMC, 'PSIMC'), (Psup, 'Psup')]
     
+    mode = models.CharField(max_length=7, choices=MOD, blank=True, null=True, verbose_name='Modo Ventilatorio')
+    
+    FrecResp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Frec, Resp.')
+    FrIO2 = models.FloatField(blank=True, null=True, default=.21)
+    Vt = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Vol. Corriente (Vt)')
+    PEEP = models.PositiveSmallIntegerField(blank=True, null=True,default=1)
+    Sens = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=2)
+    Pinsp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Presion Insp')
+    Tinsp = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2, verbose_name='Tiempo Insp (Peak Flow)')
+
+    compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemento Exploración')
+
+    CAMPO1 = 1
+    CAMPO2 = 2
+    CAMPO3 = 3
+    CAMPO4 = 4
+    CAMPOS = [(CAMPO1, 1), (CAMPO2, 2), (CAMPO3, 3), (CAMPO4, 4)]
+    Rx_Torax = models.PositiveSmallIntegerField(choices=CAMPOS, blank=True, null=True, verbose_name='Cuadrantes Afectados en Rx de Tórax')
+
+    lung_compl = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Complianza Pulmonar', help_text='No esciba aquí')
+    @property
+    def compliance(self):
+        return self.Vt / self.Pinsp
+
+    pit = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Presión Intratorácica Total', help_text='No escriba aquí, OJO: Son Kgs.')
+    @property
+    def PresionIT(self):
+        if self.Rx_Torax == None:
+            return self.Pinsp *70
+
+        if self.Rx_Torax == 1:
+            return self.Pinsp * 60
+
+        elif self.Rx_Torax == 2:
+            return self.Pinsp * 50
+
+        elif self.Rx_Torax == 3:
+            return self.Pinsp * 28
+
+        elif self.Rx_Torax == 4:
+            return self.Pinsp * 21
+
+# GASES ARTERIALES
+    pH = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=3)
+    pCO2 = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True, help_text='mm/Hg', verbose_name='pCo2')
+    pO2 = models.PositiveSmallIntegerField(blank=True, null=True, help_text='mm/Hg', verbose_name='pO2', default=1)
+    HCO3 = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True, help_text='mmol/L')
+    EB = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True, help_text='mmol/L')
+    Lactato= models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
+    sO2 = models.DecimalField(blank=True, null=True, decimal_places=1, max_digits=4, verbose_name='sO2')
+
+    PaFI = models.DecimalField(decimal_places=2, max_digits=6, blank=True, null=True)
+
+    @property
+    def ind_O2(self):
+        return self.pO2 / self.FrIO2
+
+#HEMODINAMICO
+    Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )  
+
     fc = models.IntegerField(default=0, blank=True, null=True, verbose_name='FC')
     tension_sistolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
     tension_diastolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
@@ -736,6 +805,7 @@ class Urgencias_Reevaluaciones(models.Model):
         else:
             return ''
 
+#MAS SsVs
     dextrostix = models.IntegerField(blank=True, null=True, verbose_name='Dextrostix', default=0)
     temp =  models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Temp')
     peso = models.FloatField(blank=True, null=True, default=0, help_text='Si no puede pesar al paciente, calcule un aproximado') 
@@ -745,12 +815,51 @@ class Urgencias_Reevaluaciones(models.Model):
     asc = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='ASC', help_text='No escriba aquí')
     per_abdominal = models.IntegerField(blank=True, null=True, verbose_name='Per. Abd en cms')
 
+    @property
+    def masa_corporal(self):
+        return self.peso/self.estatura ** 2
+
+        #float division by zero
+
+    @property
+    def imc_clasif(self):
+        if self.imc < 18.5 and self.imc > 1:
+            return 'Desnutrición'
+        
+        elif self.imc >18.5 and self.imc <25:
+            return 'Normal'
+
+        elif self.imc >24.9 and self.imc < 27:
+            return 'Sobrepeso Grado I'
+
+        elif self.imc > 27 and self.imc < 30:
+            return 'Sobrepeso Grado II'
+
+        elif self.imc >30 and self.imc < 35:
+            return 'Obesidad Tipo I'
+
+        elif self.imc >35 and self.imc < 40:
+            return 'Obesidad Tipo II'
+
+        elif self.imc >40 and self.imc < 50:
+            return 'Obesidad Tipo III-Mórbida'
+
+        elif self.imc >50:
+            return 'Obesidad Tipo IV-Extrema'
+        elif self.imc < 1:
+            return 'Hay que pesar al paciente'
+
+    @property
+    def area_sup_corp(self):
+        return sqrt (self.peso * (self.estatura * 100) / 3600)
+    
 
     @property
     def fio2(self):
         return (3 * self.O2 + 21) / 100
 
-
+#NEUROLOGICO
+    #AVPU
     A = 'Alerta'
     V = 'Respuesta Verbal'
     P = 'Respuesta al Dolor'
@@ -788,6 +897,24 @@ class Urgencias_Reevaluaciones(models.Model):
 
     ESCALA_DE_GLASGOW = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
 
+    Sedacion = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE)
+    meds_dosis = models.TextField(blank=True, null=True, verbose_name='Medicamentos y Dosis', help_text='Mencione medicamentos y dosis de sedación')
+
+    combativo = '+4'
+    muy_agitado = '+3'
+    agitado = '+2'
+    inquieto = '+1'
+    despierto_tranquilo = '0 Despierto y Tranquilo'
+    somnoliento = '-1'
+    sedación_leve = '-2'
+    sedación_moderada = '-3'
+    sedación_profunda = '-4'
+    sin_respuesta = '-5'
+    SEDACION = [(combativo, '+4 Combativo'), (muy_agitado, '+3 Muy agitado'), (agitado, '+2 Agitado'), (inquieto, '+1 Inquieto'),
+    (despierto_tranquilo, '0 Despierto y tranuilo'), (somnoliento, '-1 Somnoliento'), (sedación_leve, '-2 Sedación leve'), (sedación_moderada, '-3 Sedación moderada'),
+    (sedación_profunda, '-4 Sedación profunda'), (sin_respuesta, '-5 Sin respuesta') ]
+    RASS = models.CharField(max_length=30, choices=SEDACION, blank=True, null=True)
+
     @property
     def glasgow(self):
         return self.apertura_ocular + self.Respuesta_Verbal + self.Respuesta_Motora
@@ -802,66 +929,9 @@ class Urgencias_Reevaluaciones(models.Model):
         if self.tension_sistolica < 100 and self.ESCALA_DE_GLASGOW < 15 and self.fr >22:
             return 'Si paciente no es de Trauma: qSOFA indica que hay que descartar Sepsis'
 
-
-# PARAMETROS VENTILADOR MECANICO
-    VAC = 'VAC'
-    PAC = 'PAC'
-    VSIMC = 'VSIMC'
-    PSIMC = 'PSIMC'
-    Psup = 'Psup'
-    MOD = [(VAC, 'VAC'), (PAC, 'PAC'), (VSIMC, 'VSIMC'), (PSIMC, 'PSIMC'), (Psup, 'Psup')]
-    
-    mode = models.CharField(max_length=7, choices=MOD, blank=True, null=True, verbose_name='Modo Ventilatorio')
-    
-    FrecResp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Frec, Resp.')
-    FrIO2 = models.FloatField(blank=True, null=True, default=.21)
-    Vt = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Vol. Corriente (Vt)')
-    PEEP = models.PositiveSmallIntegerField(blank=True, null=True,default=1)
-    Sens = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=2)
-    Pinsp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Presion Insp')
-    Tinsp = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2, verbose_name='Tiempo Insp (Peak Flow)')
-
-    CAMPO1 = 1
-    CAMPO2 = 2
-    CAMPO3 = 3
-    CAMPO4 = 4
-    CAMPOS = [(CAMPO1, 1), (CAMPO2, 2), (CAMPO3, 3), (CAMPO4, 4)]
-    Rx_Torax = models.PositiveSmallIntegerField(choices=CAMPOS, blank=True, null=True, verbose_name='Cuadrantes Afectados en Rx de Tórax')
-
-    lung_compl = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Complianza Pulmonar', help_text='No esciba aquí')
-    @property
-    def compliance(self):
-        return self.Vt / self.Pinsp
-
-    pit = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Presión Intratorácica Total', help_text='No escriba aquí, OJO: Son Kgs.')
-    @property
-    def PresionIT(self):
-        if self.Rx_Torax == None:
-            return self.Pinsp *70
-
-        if self.Rx_Torax == 1:
-            return self.Pinsp * 60
-
-        elif self.Rx_Torax == 2:
-            return self.Pinsp * 50
-
-        elif self.Rx_Torax == 3:
-            return self.Pinsp * 28
-
-        elif self.Rx_Torax == 4:
-            return self.Pinsp * 21
-
-# GASES ARTERIALES
-    pH = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
-    pCO2 = models.PositiveSmallIntegerField(blank=True, null=True)
-    O2 = models.PositiveSmallIntegerField(blank=True, null=True)
-    HCO3 = models.PositiveSmallIntegerField(blank=True, null=True)
-    EB = models.PositiveSmallIntegerField(blank=True, null=True)
-    Lactato= models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
-
-# LABORATORIO HEMATOLOGICO
-    hb = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
-    hto = models.PositiveSmallIntegerField(blank=True, null=True)
+    # LABORATORIO HEMATOLOGICO
+    hb = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, help_text='g/dL')   
+    hto = models.DecimalField(blank=True, null=True, decimal_places=1, max_digits=4, help_text='%')
     leucocitos = models.PositiveSmallIntegerField(blank=True, null=True)
     neutrofilos = models.PositiveSmallIntegerField(blank=True, null=True)
     basofilos = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -885,35 +955,70 @@ class Urgencias_Reevaluaciones(models.Model):
     Mg = models.PositiveSmallIntegerField(blank=True, null=True)
     P = models.PositiveSmallIntegerField(blank=True, null=True)
 
-    compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemento Exploración')
-
     obs = models.TextField(blank=True, null=True, verbose_name='Observaciones')
+
+    dxs = models.TextField(blank=True, null=True, verbose_name='CONFIRMACION O REESTRUCTURACION DIAGNOSTICA')
 
     reest_man = models.TextField(blank=True, null=True, verbose_name='Reestructuración o Cambios en el Manejo')
 
     MEDINT = 'Medicina Interna'
     CIR = 'Cirugía'
     CARD = 'Cardiología'
-    NEUR = 'NEUROLOGÍA'
+    NEUR = 'Neurología'
     NEURQX = 'Neurocirugía'
     ORT = 'Ortopedia'
     GIN = 'Ginecología'
+    GAST = 'Gastroenterología'
+    NEF = 'Nefrología'
     OTRO = 'Otro'
     IC = [(MEDINT, 'Medicina Interna'), (CIR, 'Cirugía'), (CARD, 'Cardiología'), (NEUR, 'Neurología'), (NEURQX, 'Neurocirugía'),
-    (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (OTRO, 'Otro')]
+    (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (GAST, 'Gastroenterología'), (NEF, 'Nefrología'), (OTRO, 'Otro')]
     interconsulta = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+
+    NEUROLOGICO = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí')
+
+    RESPIRATORIO = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí')
+
+    HEMODINAMICO = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí')
+
+    INFECCIOSO = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí')
+
+    METABOLICO = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí')
+
+    VALORES = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí', verbose_name='VALORES ANORMALES')
+
+    Labs1 = models.FileField(upload_to='Urgencias_EvSecs', help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Labs2 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Labs3 = models.FileField(upload_to='Urgencias_EvSecs', help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Labs4 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Labs5 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+
+    image1 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image2 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image3 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image4 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image5 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image6 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image7 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image8 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image9 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    image10 = models.FileField(upload_to='Urgencias_EvSecs',help_text='formato pdf, jpg, jpge', blank=True, null=True)
 
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name='Fecha de Registro')
     update = models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')
 
 
     def save(self):
+        self.imc = self.masa_corporal
+        self.asc = self.area_sup_corp
+        self.climc = self.imc_clasif
         self.pam = self.presion_media
         self.ESCALA_DE_GLASGOW = self.glasgow
         self.NEUROLOGICO = self.consid
         self.HEMODINAMICO = self.shock, self.hta
         self.INFECCIOSO = self.qsofa
         self.lung_compl = self.compliance
+        self.PaFI = self.ind_O2
         self.pit = self.PresionIT
         super(Urgencias_Reevaluaciones, self).save()
 
@@ -925,11 +1030,3 @@ class Urgencias_Reevaluaciones(models.Model):
     class Meta:
         ordering = ('-timestamp',)  
         verbose_name_plural='d) Urgencias, Evaluaciones Subsecuentes'
-
-    
-    
-
-
-
-
-
