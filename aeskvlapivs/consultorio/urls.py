@@ -5,7 +5,7 @@ from . import views
 from .views import (PacienteListView, PacienteDetailView, PacienteCreate, PacienteUpdate, 
 PacienteDeleteView, SearchResultsView, SearchReevResultsView, ReevaluacionListView, ReevalucionDetailView, 
 ReevaluacionUpdate, ReevaluacionCreate, ReevalucionDeleteView,UrgenciasListView, UrgenciasCreate, UrgenciasDetailView,
-UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView,
+UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, UrgenciasReevListView,
 )
 
 
@@ -36,6 +36,9 @@ consultorio_patterns = ([
     path('delete_urgencias/<int:pk>/', UrgenciasDeleteView.as_view(),name='eliminar_urgencia'),
     path("search_urgencias/", SearchUrgenciasResultsView.as_view(), name="search_results_urgencias"),
     path("upload_urgencias", views.uploadFileUrgencias, name = "uploadFile_urgencias"),
+
+    path('urgencias_eval_secs/', UrgenciasReevListView.as_view(), name='urg_eval_subs'),
+    
 
    
 ], 'consultorio')

@@ -1,6 +1,6 @@
 from logging import PlaceHolder
 from django import forms
-from .models import Paciente, Reevaluacion, Urgencias
+from .models import Paciente, Reevaluacion, Urgencias, Urgencias_Reevaluaciones
 from django import forms
 
 class PacienteForm(forms.ModelForm):
@@ -84,4 +84,28 @@ class UrgenciasForm(forms.ModelForm):
             'OBSERVACIONES_GENERALES': forms.Textarea(attrs={'class':'form-control'}),
          
                         
+        }
+
+class UrgReevForm(forms.ModelForm):
+    class Meta:
+        model = Urgencias_Reevaluaciones
+        fields = ['paciente', 'edad', 'evaluacion_sec', 'dxs_previos', 'sit_actual', 'fr', 'O2', 'saturacion', 'vent_mec', 'mode', 'FrecResp',
+        'FrIO2', 'Vt', 'PEEP', 'Sens', 'Pinsp', 'Tinsp', 'compl_ex', 'Rx_Torax', 'pH', 'pCO2', 'pO2', 'PaFI', 'Diaforesis',
+        'fc', 'tension_sistolica', 'tension_diastolica', 'dextrostix', 'temp', 'peso', 'estatura', 'per_abdominal',
+        'AVPU', 'apertura_ocular', 'Respuesta_Verbal', 'Respuesta_Motora', 'Sedacion', 'meds_dosis', 'RASS', 'hb', 'hto', 'leucocitos', 'neutrofilos',
+        'basofilos', 'eosinofilos', 'linfocitos', 'glucosa', 'Urea', 'Creatinina', 'PCR', 'DHL', 'TGP', 'TGO', 'bilirrTot', 'Na', 'K', 'Ca','Mg',
+        'P', 'obs', 'dxs', 'reest_man', 'interconsulta', 'Labs1', 'Labs2', 'Labs3', 'Labs4', 'Labs5', 'image1', 'image2', 'image3', 'image4',
+        'image5', 'image6', 'image7', 'image8', 'image9', 'image10']
+
+        aw_id_fields = ('paciente', )
+        autocomplete_fields = ('paciente',)
+        widgets = {
+            'dxs_previos': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Copie y peque los Dxs de Ev. Primaria o de la última evalución subsecuente'}),
+            'sit_actual': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Describa si hay algún cambio en la evolución clínica o cambios en el manejo con respecto a evaluación anterior'}),
+            'compl_ex': forms.Textarea(attrs={'class':'form-control'}),
+            'meds_dosis': forms.Textarea(attrs={'class':'form-control'}),
+            'obs': forms.Textarea(attrs={'class':'form-control'}),
+            'dxs': forms.Textarea(attrs={'class':'form-control'}),
+            'reest_man': forms.Textarea(attrs={'class':'form-control'}),
+
         }
