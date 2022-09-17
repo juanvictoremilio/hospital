@@ -253,6 +253,13 @@ class UrgenciasReevListView(ListView):
     model = Urgencias_Reevaluaciones
     template_name = 'urgencias_reevaluaciones_list.html'
 
+class UrgReevDetailView(DetailView):
+    model = Urgencias_Reevaluaciones
+
+
+
+
+
 
 
 

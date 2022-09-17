@@ -2,10 +2,10 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from .views import (PacienteListView, PacienteDetailView, PacienteCreate, PacienteUpdate, 
-PacienteDeleteView, SearchResultsView, SearchReevResultsView, ReevaluacionListView, ReevalucionDetailView, 
-ReevaluacionUpdate, ReevaluacionCreate, ReevalucionDeleteView,UrgenciasListView, UrgenciasCreate, UrgenciasDetailView,
-UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, UrgenciasReevListView,
+from .views import (PacienteListView, PacienteDetailView, PacienteCreate, PacienteUpdate, PacienteDeleteView, SearchResultsView, 
+SearchReevResultsView, ReevaluacionListView, ReevalucionDetailView, ReevaluacionUpdate, ReevaluacionCreate, ReevalucionDeleteView, 
+UrgenciasListView, UrgenciasCreate, UrgenciasDetailView, UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, 
+UrgenciasReevListView, UrgReevDetailView
 )
 
 
@@ -38,6 +38,7 @@ consultorio_patterns = ([
     path("upload_urgencias", views.uploadFileUrgencias, name = "uploadFile_urgencias"),
 
     path('urgencias_eval_secs/', UrgenciasReevListView.as_view(), name='urg_eval_subs'),
+    path('<int:pk>/<slug:paciente_slug>', UrgReevDetailView.as_view(), name='urgencias_reev'),
     
 
    

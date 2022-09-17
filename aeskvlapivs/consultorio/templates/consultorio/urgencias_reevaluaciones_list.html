@@ -18,8 +18,9 @@
           <div>
             <p>{{urg_reev.dxs_previos|striptags|safe|truncatechars:"200"}}</p>
             {% if request.user.is_staff %}
-            <p>
-            
+            <p><a href="{% url 'consultorio:urgencias_reev' urg_reev.id urg_reev.paciente|slugify %}">Resumen</a>
+              
+             
               
                 
               <!--  | <a href="#">Borrar</a>
