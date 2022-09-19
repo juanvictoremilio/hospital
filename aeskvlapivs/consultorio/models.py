@@ -1,11 +1,15 @@
 
 from ast import Break, Continue, If, Return
+from curses import A_BLINK
 from email.policy import default
 import os
 from datetime import date
 from sre_parse import Verbose
+from tabnanny import verbose
+from tkinter import N
 from tokenize import blank_re
 from typing import Any, Type
+from uuid import NAMESPACE_X500
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from math import sqrt
@@ -82,6 +86,17 @@ class Paciente(models.Model):
     cancer = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True, verbose_name='Cáncer')
     
     otras_enf = models.TextField(blank=True, null=True, verbose_name='Complemento, Otros Antecedentes y Enfermedades')
+
+    #AGO
+    Menarca = models.CharField(max_length=20, blank=True, null=True)
+    FUR = models.DateField(blank=True, null=True)
+    Gestas = models.PositiveSmallIntegerField(blank=True, null=True)
+    Partos = models. PositiveSmallIntegerField(blank=True, null=True)
+    pap = models.DateField(blank=True, null=True, verbose_name='Último Pappaniclocaou')
+    mast = models.DateField(blank=True, null=True, verbose_name='Última mastografía')
+    obsgin = models.TextField(blank=True, null=True, verbose_name='Observaciones Genecoobstétricas')
+
+
     cir_previas = models.CharField(max_length=200, blank=True, null=True, verbose_name='Cirugías previas')
 
     dxs_antec = models.TextField(blank=True, null=True, verbose_name='Resumen de Diagnósticos por Antecedentes', help_text='No esciriba aquí: Guarde para ver Resultados')
@@ -334,6 +349,11 @@ class Reevaluacion(models.Model):
 
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
+    FEMENINO= 'FEM'
+    MASCULINO = 'MASC'
+    GENERO = [(FEMENINO, 'Femenino'), (MASCULINO, 'Masculino')]
+    genero = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
+
     age = models.SmallIntegerField(default=0, verbose_name='Edad')
 
     entitlement = models.CharField(max_length=50, choices=DERECHOHABIENCIA, blank=True, null=True, verbose_name='Derechohabiencia')
@@ -455,6 +475,12 @@ class Urgencias(models.Model):
 
 #IDENTIFICACION Y ANTECEDENTES
     nombre = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+
+    FEMENINO= 'FEM'
+    MASCULINO = 'MASC'
+    GENERO = [(FEMENINO, 'Femenino'), (MASCULINO, 'Masculino')]
+    genero = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
+
     edad = models.SmallIntegerField(default=0)
 
     im_bkground = models.TextField(verbose_name='Antecedentes Inmediatos')
@@ -690,6 +716,12 @@ class Urgencias_Reevaluaciones(models.Model):
 
 #IDENTIFICACION Y ANTECEDENTES
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+
+    FEMENINO= 'FEM'
+    MASCULINO = 'MASC'
+    GENERO = [(FEMENINO, 'Femenino'), (MASCULINO, 'Masculino')]
+    genero = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
+
     edad = models.SmallIntegerField(default=0)
     evaluacion_sec = models.CharField(max_length=50, choices=REEV_SECS, blank=True, null=True, verbose_name='Evaluación Subsecuente')
     dxs_previos = models.TextField(blank=True, null=True)
@@ -700,8 +732,8 @@ class Urgencias_Reevaluaciones(models.Model):
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min si es el caso')
     saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
     
-    POSITIVO = 'POS'
-    NEGATIVO = 'NEG' 
+    POSITIVO = 'POSITIVO'
+    NEGATIVO = 'NEGATIVO' 
     AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
     vent_mec = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE, verbose_name='Ventilación Mecánica')
 
@@ -723,8 +755,6 @@ class Urgencias_Reevaluaciones(models.Model):
     Sens = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=2)
     Pinsp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Presion Insp')
     Tinsp = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2, verbose_name='Tiempo Insp (Peak Flow)')
-
-    compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemento Exploración')
 
     CAMPO1 = 1
     CAMPO2 = 2
@@ -768,8 +798,15 @@ class Urgencias_Reevaluaciones(models.Model):
     PaFI = models.DecimalField(decimal_places=2, max_digits=6, blank=True, null=True)
 
     @property
+    def sira(self):
+        if self.PaFI < 350 and self.vent_mec == 'POSITIVO':
+            return 'Paciente con SIRA'
+
+    @property
     def ind_O2(self):
         return self.pO2 / self.FrIO2
+
+    compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemente exploración torácica')
 
 #HEMODINAMICO
     Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )  
@@ -778,6 +815,13 @@ class Urgencias_Reevaluaciones(models.Model):
     tension_sistolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
     tension_diastolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
     pam = models.IntegerField(default=0, verbose_name='PAM', help_text='No escriba aquí')
+    pvc = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    uso_aminas = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE, verbose_name='Uso de aminas')
+    esp_aminas = models.TextField(blank=True, null=True, verbose_name='Especifique uso de aminas')
+
+    antihipert = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE, verbose_name='Uso de antihipertensivos')
+    esp_aht = models.TextField(blank=True, null=True, verbose_name='Especifique uso de antihipertenivos')
 
     @property
     def presion_media(self):
@@ -785,7 +829,7 @@ class Urgencias_Reevaluaciones(models.Model):
 
     @property
     def shock(self):
-        if self.pam < 70 and self.fc >95 and self.Diaforesis == 'POS' :
+        if self.pam < 70 and self.fc >95 and self.Diaforesis == 'POSITIVO' :
             return 'Descarte Estado de Choque o asegúrese de haber checado TA y FC '
 
         else:
@@ -804,6 +848,17 @@ class Urgencias_Reevaluaciones(models.Model):
 
         else:
             return ''
+
+    ingreso_iv = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Ingreso IV hasta el momento actual desde su ingreso', default=1)
+    diuresis = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Diuresis hasta el momento actual desde su ingreso', default=1)
+    balance = models.SmallIntegerField(blank=True, null=True, verbose_name='Balance al momento actual')
+
+    @property
+    def fbalance(self):
+        return self.ingreso_iv - self.diuresis
+
+    
+
 
 #MAS SsVs
     dextrostix = models.IntegerField(blank=True, null=True, verbose_name='Dextrostix', default=0)
@@ -900,20 +955,21 @@ class Urgencias_Reevaluaciones(models.Model):
     Sedacion = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE)
     meds_dosis = models.TextField(blank=True, null=True, verbose_name='Medicamentos y Dosis', help_text='Mencione medicamentos y dosis de sedación')
 
-    combativo = '+4'
-    muy_agitado = '+3'
-    agitado = '+2'
-    inquieto = '+1'
+    combativo = '+4 Combativo'
+    muy_agitado = '+3 Muy agitado'
+    agitado = '+2 agitado'
+    inquieto = '+1 inquieto'
     despierto_tranquilo = '0 Despierto y Tranquilo'
-    somnoliento = '-1'
-    sedación_leve = '-2'
-    sedación_moderada = '-3'
-    sedación_profunda = '-4'
-    sin_respuesta = '-5'
+    somnoliento = '-1 somnoliento'
+    sedación_leve = '-2 sedación leve'
+    sedación_moderada = '-3 sedación moderada'
+    sedación_profunda = '-4 sedación profunda'
+    sin_respuesta = '-5 sin respuesta'
     SEDACION = [(combativo, '+4 Combativo'), (muy_agitado, '+3 Muy agitado'), (agitado, '+2 Agitado'), (inquieto, '+1 Inquieto'),
     (despierto_tranquilo, '0 Despierto y tranuilo'), (somnoliento, '-1 Somnoliento'), (sedación_leve, '-2 Sedación leve'), (sedación_moderada, '-3 Sedación moderada'),
     (sedación_profunda, '-4 Sedación profunda'), (sin_respuesta, '-5 Sin respuesta') ]
     RASS = models.CharField(max_length=30, choices=SEDACION, blank=True, null=True)
+    obs_neur = models.TextField(blank=True, null=True, verbose_name='Complemento observaciones Neurològicas')
 
     @property
     def glasgow(self):
@@ -926,7 +982,7 @@ class Urgencias_Reevaluaciones(models.Model):
 
     @property
     def qsofa(self):
-        if self.tension_sistolica < 100 and self.ESCALA_DE_GLASGOW < 15 and self.fr >22:
+        if self.tension_sistolica < 100 and self.ESCALA_DE_GLASGOW < 15 and self.pam < 65:
             return 'Si paciente no es de Trauma: qSOFA indica que hay que descartar Sepsis'
 
     # LABORATORIO HEMATOLOGICO
@@ -955,7 +1011,7 @@ class Urgencias_Reevaluaciones(models.Model):
     Mg = models.PositiveSmallIntegerField(blank=True, null=True)
     P = models.PositiveSmallIntegerField(blank=True, null=True)
 
-    obs = models.TextField(blank=True, null=True, verbose_name='Observaciones')
+    obs = models.TextField(blank=True, null=True, verbose_name='Anotaciones generales')
 
     dxs = models.TextField(blank=True, null=True, verbose_name='CONFIRMACION O REESTRUCTURACION DIAGNOSTICA')
 
@@ -1012,7 +1068,9 @@ class Urgencias_Reevaluaciones(models.Model):
         self.imc = self.masa_corporal
         self.asc = self.area_sup_corp
         self.climc = self.imc_clasif
+        self.RESPIRATORIO = self.sira
         self.pam = self.presion_media
+        self.balance = self.fbalance
         self.ESCALA_DE_GLASGOW = self.glasgow
         self.NEUROLOGICO = self.consid
         self.HEMODINAMICO = self.shock, self.hta

@@ -10,6 +10,7 @@ class PacienteForm(forms.ModelForm):
      'religion', 'sport', 'civil_status', 'adress', 'email', 'phone', 'entitlement', 'specify',
      'insurance', 'immediate_background', 'smoking', 'alcohol', 'drugs_adictions', 'allergies',
      'dislipidemia', 'dm', 'hta', 'inf_ang_de_pecho', 'evc', 'ivp', 'EPOC', 'cancer', 'otras_enf',
+     'Menarca', 'FUR', 'Gestas', 'pap', 'mast', 'obsgin',
      'cir_previas', 'obs', 'actual_situation', 'tension_sistolica', 'tension_diastolica', 'fc','fr',
      'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura', 'per_abdominal', 'Imagenología1',
      'Imagenología2', 'Imagenología3', 'Labs1', 'Labs2', 'recetas', 'diagnosis', 'obs', 'txs',
@@ -30,6 +31,7 @@ class PacienteForm(forms.ModelForm):
             'immediate_background': forms.Textarea(attrs={'class':'form-control'}),
             'obs': forms.Textarea(attrs={'class':'form-control'}),
             'cir_previas': forms.TextInput(attrs={'class':'form-control'}),
+            'obsgin': forms.Textarea(attrs={'class':'form-control'}),
             'otras_enf': forms.Textarea(attrs={'class':'form-control'}),
             'actual_situation': forms.Textarea(attrs={'class':'form-control'}),
           
@@ -43,7 +45,7 @@ class PacienteForm(forms.ModelForm):
 class ReevaluacionForm(forms.ModelForm):
     class Meta:
         model = Reevaluacion
-        fields = ['paciente', 'age', 'dxs_previos', 'immediate_background',
+        fields = ['paciente', 'genero', 'age', 'dxs_previos', 'immediate_background',
         'tension_sistolica', 'tension_diastolica', 'fc', 'fr', 'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura',
         'per_abdominal', 'expl', 'Imagenología1', 'Imagenología2', 'Imagenología3', 'Labs1', 'Labs2',
         'recetas', 'diagnosis', 'obs', 'txs', 
@@ -66,7 +68,7 @@ class ReevaluacionForm(forms.ModelForm):
 class UrgenciasForm(forms.ModelForm):
     class Meta:
         model = Urgencias
-        fields = ['nombre', 'edad', 'im_bkground', 'other_bkground', 'fr', 'O2', 'saturacion', 'fc', 'tension_sistolica', 'tension_diastolica', 'Diaforesis',
+        fields = ['nombre', 'edad','genero', 'im_bkground', 'other_bkground', 'fr', 'O2', 'saturacion', 'fc', 'tension_sistolica', 'tension_diastolica', 'Diaforesis',
         'AVPU', 'apertura_ocular', 'Respuesta_Verbal', 'Respuesta_Motora', 'dextrostix', 'temp', 'peso', 'estatura', 'per_abdominal',
          'expl', 'dxs', 'MANEJO_INICIAL', 'OBSERVACIONES_GENERALES' ]
 
@@ -77,7 +79,7 @@ class UrgenciasForm(forms.ModelForm):
             'im_bkground': forms.Textarea(attrs={'class':'form-control', 
             'placeholder':'Describa por qué llegó el paciente, quien lo trajo o como llegó, qué sucedió antes (se desmayó, tuvo un accidente. empezó a sentirse mal...), describa el habitus exterior y los síntomas que el paciente pueda referir'}),
             'other_bkground': forms.Textarea(attrs={'class':'form-control', 'placeholder' : 'Describa y recopile enfermedades previas, alergias y lo que considere importante'}),
-            'expl': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Complemente el hábitus exterior y escriba lo relevante desde la cabeza a los pies'}),
+            'expl': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Recomendamos iniciar con el hábitus exterior y describa lo relevante desde la cabeza a los pies'}),
             'dxs': forms.Textarea(attrs={'class':'form-control'}),
             'MANEJO_INICIAL': forms.Textarea(attrs={'class':'form-control'}),
             'immediate_background': forms.Textarea(attrs={'class':'form-control'}),
@@ -89,7 +91,7 @@ class UrgenciasForm(forms.ModelForm):
 class UrgReevForm(forms.ModelForm):
     class Meta:
         model = Urgencias_Reevaluaciones
-        fields = ['paciente', 'edad', 'evaluacion_sec', 'dxs_previos', 'sit_actual', 'fr', 'O2', 'saturacion', 'vent_mec', 'mode', 'FrecResp',
+        fields = ['paciente', 'edad', 'genero', 'evaluacion_sec', 'dxs_previos', 'sit_actual', 'fr', 'O2', 'saturacion', 'vent_mec', 'mode', 'FrecResp',
         'FrIO2', 'Vt', 'PEEP', 'Sens', 'Pinsp', 'Tinsp', 'compl_ex', 'Rx_Torax', 'pH', 'pCO2', 'pO2', 'PaFI', 'Diaforesis',
         'fc', 'tension_sistolica', 'tension_diastolica', 'dextrostix', 'temp', 'peso', 'estatura', 'per_abdominal',
         'AVPU', 'apertura_ocular', 'Respuesta_Verbal', 'Respuesta_Motora', 'Sedacion', 'meds_dosis', 'RASS', 'hb', 'hto', 'leucocitos', 'neutrofilos',
@@ -105,6 +107,7 @@ class UrgReevForm(forms.ModelForm):
             'compl_ex': forms.Textarea(attrs={'class':'form-control'}),
             'meds_dosis': forms.Textarea(attrs={'class':'form-control'}),
             'obs': forms.Textarea(attrs={'class':'form-control'}),
+            'obs_neur': forms.Textarea(attrs={'class':'form-control'}),
             'dxs': forms.Textarea(attrs={'class':'form-control'}),
             'reest_man': forms.Textarea(attrs={'class':'form-control'}),
 
