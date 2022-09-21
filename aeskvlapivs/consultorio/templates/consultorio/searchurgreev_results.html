@@ -1,0 +1,23 @@
+<h1>Search</h1>
+
+<h1>Search Results</h1>
+
+<form action="{% url 'search_results_urgenciasreev' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+<ul>
+  {% for urg_reev in urgencias_reevaluaciones_list %}
+    <li>
+      {{ object.nombre }}
+    </li>
+    
+  {% endfor %}
+
+</ul>
+
+<!--
+              {% if request.user.is_staff %}
+                | <a href="#">Editar</a>
+                | <a href="#">Borrar</a>
+              {% endif %}
+              -->

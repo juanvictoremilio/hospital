@@ -49,9 +49,9 @@ class Paciente(models.Model):
     #Identificación
 
     name = models.CharField(max_length=100, verbose_name='Nombre')
-    gender = models.CharField(max_length=4, choices=GENERO, verbose_name='Género')
+    gender = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
     dob = models.DateField(verbose_name='Fecha de Nacimiento', blank=True, null=True)
-    age = models.IntegerField(verbose_name='Edad', default=0, )
+    age = models.IntegerField(verbose_name='Edad', blank=True, null=True, default=0, )
     nationality = models.CharField(max_length=100, blank=True, null=True, verbose_name='Nacionalidad y Lugar de Nacimiento')
     etnia = models.CharField(max_length=50, blank=True, null=True, verbose_name='Etnia')
     scholarship = models.CharField(max_length=50, blank=True, null=True, verbose_name='Escolaridad')
@@ -68,7 +68,7 @@ class Paciente(models.Model):
     
     # Padeciemiento Actual
 
-    immediate_background = models.TextField(verbose_name="Padecimiento, Razón de Abordaje o Situación Actual")
+    immediate_background = models.TextField(blank=True, null=True, verbose_name="Padecimiento, Razón de Abordaje o Situación Actual")
 
     #ANTECEDENTES
 
@@ -105,7 +105,7 @@ class Paciente(models.Model):
 
     # Situación actual y Exploración
 
-    actual_situation = models.TextField(verbose_name="Situación Actual y Exploración")
+    actual_situation = models.TextField (blank=True, null=True, verbose_name="Situación Actual y Exploración")
 
     tension_sistolica = models.IntegerField(blank=True, null=True, default=0)
     tension_diastolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
@@ -144,9 +144,28 @@ class Paciente(models.Model):
 
     #Diagnóticos y Tx
 
-    diagnosis = models.TextField(verbose_name='Diagnósticos')
-    obs = models.TextField(verbose_name="Observaciones")
-    txs = models.TextField(verbose_name='Manejos y Tratamientos')
+    diagnosis = models.TextField(blank=True, null=True, verbose_name='Diagnósticos')
+    obs = models.TextField(blank=True, null=True, verbose_name="Observaciones")
+    txs = models.TextField(blank=True, null=True, verbose_name='Manejos y Tratamientos')
+
+    MED_GRAL = 'Medicina General'
+    URGENCIAS = 'Urgenciasas'
+    MEDINT = 'Medicina Interna'
+    INT = 'Intensivista'
+    CIR = 'Cirugía'
+    CARD = 'Cardiología'
+    NEUR = 'Neurología'
+    NEURQX = 'Neurocirugía'
+    ORT = 'Ortopedia'
+    GIN = 'Ginecología'
+    GAST = 'Gastroenterología'
+    NEF = 'Nefrología'
+    OTRO = 'Otro'
+    IC = [(MED_GRAL, 'Medicina General'), (URGENCIAS, 'Urgencias'), (MEDINT, 'Medicina Interna'), (INT, 'Intensivista'), (CIR, 'Cirugía'), (CARD, 'Cardiología'), (NEUR, 'Neurología'), (NEURQX, 'Neurocirugía'),
+    (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (GAST, 'Gastroenterología'), (NEF, 'Nefrología'), (OTRO, 'Otro')]
+    especialidad = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+
+    esp_otro = models.CharField(blank=True, null=True, max_length=50, verbose_name='Especifique otro')
 
     adendums = models.TextField(blank=True, null=True)
 
@@ -1002,12 +1021,13 @@ class Urgencias_Reevaluaciones(models.Model):
     DHL = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     TGP = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     TGO = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
-    bilirrTot= models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    bilirrTot = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
 
 #ELECTROLITOS
     Na = models.PositiveSmallIntegerField(blank=True, null=True)
     K = models.PositiveSmallIntegerField(blank=True, null=True)
     Ca = models.PositiveSmallIntegerField(blank=True, null=True)
+    Cl = models.PositiveSmallIntegerField(blank=True, null=True)
     Mg = models.PositiveSmallIntegerField(blank=True, null=True)
     P = models.PositiveSmallIntegerField(blank=True, null=True)
 

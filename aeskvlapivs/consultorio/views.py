@@ -249,12 +249,29 @@ class UrgenciasDeleteView(DeleteView):
 
 # URGENCIAS REEVALUACIONES
 
+class SearchUrgenciasReevResultsView(ListView):
+    model = Urgencias_Reevaluaciones
+    template_name = 'searchurgreev_results.html'
+
+    def get_queryset(self):  # new
+        query = self.request.GET.get("q")
+        object_list = Urgencias_Reevaluaciones.objects.filter(
+            Q(paciente__name__icontains=query)
+        )
+        return object_list
+
 class UrgenciasReevListView(ListView):
     model = Urgencias_Reevaluaciones
     template_name = 'urgencias_reevaluaciones_list.html'
 
 class UrgReevDetailView(DetailView):
     model = Urgencias_Reevaluaciones
+
+@method_decorator(staff_member_required, name='dispatch')
+class UrgenciasReevCreate(CreateView):
+    model = Urgencias_Reevaluaciones
+    form_class = UrgReevForm
+    success_url = reverse_lazy('consultorio:urg_eval_subs')
 
 
 

@@ -4,6 +4,8 @@
 {% block content %}
 {% include 'consultorio/includes/reevaluacion_menu.html' %}
 
+<header style = "color:darkgreen; text-align:center;"> <h2> Reevaluaciones Consulta / Intrahospitalaria </h2> </header>
+
 
 <form action="{% url 'consultorio:search_results_reev' %}" method="get">
   <input name="q" type="text" placeholder="Search...">
@@ -14,7 +16,7 @@
     {% for pac in reevaluacion_list %}
       <div class="row mt-3">
         <div class="col-md-9 mx-auto">
-          <h2 style = "color:rgba(0, 0, 128, 0.805);"  class="mb-4">  {{pac.paciente}}</h2>
+          <h4 style = "color:rgba(0, 0, 128, 0.805);"  class="mb-4">  {{pac.paciente}}</h4>
           <div>
             <p>{{pac.immediate_background|striptags|safe|truncatechars:"200"}}</p>
             {% if request.user.is_staff %}
