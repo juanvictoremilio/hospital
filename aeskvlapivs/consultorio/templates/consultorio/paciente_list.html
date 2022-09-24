@@ -4,7 +4,7 @@
 {% block content %}
 {% include 'consultorio/includes/top_menu.html' %}
 
-<header style = "color:darkgreen; text-align:center;"> <h2> Pacientes de Consulta / Ingreso Hospitalario / Historia Clinica</h2> </header>
+<header style = "color:dimgray; text-align:center;"> <h2> Pacientes de Consulta / Ingreso Hospitalario / Historia Clinica</h2> </header>
 
 <form action="{% url 'consultorio:search_results' %}" method="get">
   <input name="q" type="text" placeholder="Search...">

@@ -4,7 +4,9 @@
 {% block content %}
 {% include 'consultorio/includes/urgenciasreev_menu.html' %}
 
-<header style = "color:darkgreen; text-align:center;" > <h2> Reevaluaciones Subsecuentes Urgencias</h2> </header>
+<header style = "color:dimgrey; text-align:center;" > 
+  <h2> Reevaluaciones Subsecuentes Urgencias</h2> 
+</header>
 
 <form action="{% url 'consultorio:search_results_urgenciasreev' %}" method="get">
   <input name="q" type="text" placeholder="Search...">
