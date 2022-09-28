@@ -14,10 +14,10 @@ admin.site.index_title = "Bienvenido a tu escritorio médico"
 
 
 class PacienteAdmin(admin.ModelAdmin):
-	list_display = ['name', 'age', 'phone', 'email','diagnosis','dextrostix', 'a1c', 'imc', 'climc','timestamp', 'update']
+	list_display = ['name', 'age', 'phone', 'email','diagnosis','dextrostix', 'a1c', 'imc', 'climc', 'author', 'timestamp', 'update']
 	readonly_fields = ('timestamp', 'update')
 	search_fields = ('name', 'phone', 'email')
-	list_filter = ['entitlement']
+	list_filter = ['entitlement', 'author']
 
 
 class ReevaluacionAdmin(admin.ModelAdmin):

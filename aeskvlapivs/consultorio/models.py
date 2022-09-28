@@ -13,6 +13,7 @@ from uuid import NAMESPACE_X500
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from math import sqrt
+from django.contrib.auth.models import User
 
 fs = FileSystemStorage(location='/media/')
 
@@ -49,6 +50,10 @@ class Paciente(models.Model):
     #Identificación
 
     name = models.CharField(max_length=100, verbose_name='Nombre')
+    author = models.ForeignKey(User,
+                              on_delete=models.CASCADE,
+                              related_name='consultorio_pacientes',
+                              blank=True, null=True)
     gender = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
     dob = models.DateField(verbose_name='Fecha de Nacimiento', blank=True, null=True)
     age = models.IntegerField(verbose_name='Edad', blank=True, null=True, default=0, )
