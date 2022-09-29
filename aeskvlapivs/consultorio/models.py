@@ -50,10 +50,6 @@ class Paciente(models.Model):
     #Identificación
 
     name = models.CharField(max_length=100, verbose_name='Nombre')
-    author = models.ForeignKey(User,
-                              on_delete=models.CASCADE,
-                              related_name='consultorio_pacientes',
-                              blank=True, null=True)
     gender = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
     dob = models.DateField(verbose_name='Fecha de Nacimiento', blank=True, null=True)
     age = models.IntegerField(verbose_name='Edad', blank=True, null=True, default=0, )
@@ -478,9 +474,7 @@ class Reevaluacion(models.Model):
         self.climc = self.imc_clasif
         self.asc = self.area_sup_corp
         self.pam = self.presion_media
-        super(Reevaluacion, self).save()
-       
-        
+        super(Reevaluacion, self).save()        
 
     
     def __str__(self):
@@ -746,7 +740,9 @@ class Urgencias_Reevaluaciones(models.Model):
     GENERO = [(FEMENINO, 'Femenino'), (MASCULINO, 'Masculino')]
     genero = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
 
-    edad = models.SmallIntegerField(default=0)
+    edad = models.SmallIntegerField( default=0)
+
+
     evaluacion_sec = models.CharField(max_length=50, choices=REEV_SECS, blank=True, null=True, verbose_name='Evaluación Subsecuente')
     dxs_previos = models.TextField(blank=True, null=True)
     sit_actual = models.TextField(blank=True, null=True, verbose_name='Situación Actual')
@@ -1104,6 +1100,7 @@ class Urgencias_Reevaluaciones(models.Model):
         self.PaFI = self.ind_O2
         self.pit = self.PresionIT
         super(Urgencias_Reevaluaciones, self).save()
+        
 
 
     def __str__(self):
