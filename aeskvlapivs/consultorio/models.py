@@ -13,6 +13,7 @@ from uuid import NAMESPACE_X500
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from math import sqrt
+from django.contrib.auth.models import User
 
 fs = FileSystemStorage(location='/media/')
 
@@ -473,9 +474,7 @@ class Reevaluacion(models.Model):
         self.climc = self.imc_clasif
         self.asc = self.area_sup_corp
         self.pam = self.presion_media
-        super(Reevaluacion, self).save()
-       
-        
+        super(Reevaluacion, self).save()        
 
     
     def __str__(self):
@@ -741,7 +740,9 @@ class Urgencias_Reevaluaciones(models.Model):
     GENERO = [(FEMENINO, 'Femenino'), (MASCULINO, 'Masculino')]
     genero = models.CharField(max_length=4, choices=GENERO, blank=True, null=True, verbose_name='Género')
 
-    edad = models.SmallIntegerField(default=0)
+    edad = models.SmallIntegerField( default=0)
+
+
     evaluacion_sec = models.CharField(max_length=50, choices=REEV_SECS, blank=True, null=True, verbose_name='Evaluación Subsecuente')
     dxs_previos = models.TextField(blank=True, null=True)
     sit_actual = models.TextField(blank=True, null=True, verbose_name='Situación Actual')
@@ -1099,6 +1100,7 @@ class Urgencias_Reevaluaciones(models.Model):
         self.PaFI = self.ind_O2
         self.pit = self.PresionIT
         super(Urgencias_Reevaluaciones, self).save()
+        
 
 
     def __str__(self):
