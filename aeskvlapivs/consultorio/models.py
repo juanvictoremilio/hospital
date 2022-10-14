@@ -1032,6 +1032,8 @@ class Urgencias_Reevaluaciones(models.Model):
     Mg = models.PositiveSmallIntegerField(blank=True, null=True)
     P = models.PositiveSmallIntegerField(blank=True, null=True)
 
+    Rx_descripcion = models.TextField(blank=True, null=True, verbose_name='Descripciones Radiológicas')
+
     obs = models.TextField(blank=True, null=True, verbose_name='Anotaciones generales')
 
     dxs = models.TextField(blank=True, null=True, verbose_name='CONFIRMACION O REESTRUCTURACION DIAGNOSTICA')
@@ -1050,7 +1052,9 @@ class Urgencias_Reevaluaciones(models.Model):
     OTRO = 'Otro'
     IC = [(MEDINT, 'Medicina Interna'), (CIR, 'Cirugía'), (CARD, 'Cardiología'), (NEUR, 'Neurología'), (NEURQX, 'Neurocirugía'),
     (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (GAST, 'Gastroenterología'), (NEF, 'Nefrología'), (OTRO, 'Otro')]
-    interconsulta = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+    interconsultante1 = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+    interconsultante2 = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+    interconsultante3 = models.CharField(max_length=20, choices=IC, blank=True, null=True)
 
     NEUROLOGICO = models.CharField(max_length=100, blank=True, null=True, help_text='No escriba aquí')
 

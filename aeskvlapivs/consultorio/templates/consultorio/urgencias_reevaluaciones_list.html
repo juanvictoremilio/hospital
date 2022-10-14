@@ -17,12 +17,14 @@
     {% for urg_reev in urgencias_reevaluaciones_list %}
       <div class="row mt-3">
         <div class="col-md-9 mx-auto">
-          <h4 style = "color:rgba(0, 0, 128, 0.805);"  class="mb-4">  {{urg_reev.paciente}}</h4>
+          <h4 style = "color:rgba(0, 0, 128, 0.805); "class="mb-4">  {{urg_reev.paciente}}</h4>
           <div>
             <p>{{urg_reev.sit_actual|striptags|safe|truncatechars:"200"}}</p>
             <p>{{urg_reev.dxs_previos|linebreaks}}</p>
             {% if request.user.is_staff %}
-            <p><a href="{% url 'consultorio:urgencias_reev_detail' urg_reev.id urg_reev.paciente|slugify %}">Resumen</a>
+            <p><a href="{% url 'consultorio:urgencias_reev_detail' urg_reev.id urg_reev.paciente|slugify %}">Resumen</a> |
+            
+           
               
              
               

@@ -6,7 +6,7 @@
 {% if request.user.is_staff %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <span class="navbar-brand" href="#"><i>Urgencias</i></span>
+    <span class="navbar-brand" href="#"><i>Reevaluciones de Urgencias</i></span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nep" aria-controls="nep" aria-expanded="false">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,7 +14,7 @@
       <ul class="navbar-nav mr-auto">
 
         <li class="nav-item" >
-            
+            <a class="nav-link" href="{% url 'consultorio:urgreev_create' %}"><i>Nueva Reevalución de Urgencias /Evaluaciones Subsecuentes</i></a>
             <a class="nav-link" href="{% url 'consultorio:urg_eval_subs' %}"><i>Evaluciones Secundarias y Subsecuentes </i></a>
         </li>
 

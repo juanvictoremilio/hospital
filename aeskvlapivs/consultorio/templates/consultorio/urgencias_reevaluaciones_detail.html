@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}{{object.paciente}}{% endblock %}
 {% block content %}
-{% include 'consultorio/includes/urgencias_menu.html' %}
+{% include 'consultorio/includes/urgenciasreev_menu.html' %}
 <main role="main">
   <div class="container">
     <div class="row mt-3">
@@ -36,28 +36,74 @@
                 HCO3: {{object.HCO3}} &nbsp; &nbsp; EB: {{object.EB }} sO2: {{object.sO2}} &nbsp; &nbsp; <b>PaFI: {{object.PaFI}} </b>  </p>
                 <p> {{object.compl_ex}} </p>
 
+             <p><b>STATUS HEMODINAMICO</b></p>
+             <p>Diaforesis: {{object.Diaforesis}}, &nbsp; &nbsp;  FC: {{object.fc}},  &nbsp; &nbsp;   TA: {{object.tension_sistolica}}/{{object.tension_diastolica}}, &nbsp; &nbsp; <b>PAM: {{object.pam}},</b> 
+                &nbsp; &nbsp; PVC: {{object.pvc}}, &nbsp; &nbsp; Uso de Aminas: {{object.uso_aminas}}, &nbsp; &nbsp; {{object.esp_aminas}},  
+                &nbsp; &nbsp; Uso de Antihipertemsivos: {{object.antihipert}}, &nbsp; &nbsp; {{object.esp_aht }} </p>
+             <p>Ingreso IV hasta el momento actual desde su ingreso: {{object.ingreso_iv}}, &nbsp; &nbsp; Diuresis hasta el momento actual desde su ingreso: {{object.diuresis}},
+                &nbsp; &nbsp; Balance aproximado al momento actual: {{object.balance}} </p>
 
-           <p><b>SIGNOS VITALES:</b>FR: {{object.fr}}, &nbsp; &nbsp;  FC {{object.fc}}, &nbsp; &nbsp;   TA {{object.tension_sistolica}}/{{object.tension_diastolica}}, &nbsp; &nbsp;    
-            <b>PAM: {{object.pam}},</b> &nbsp; &nbsp;  Temp: {{object.temp}}, &nbsp; &nbsp;   Sa02: {{object.saturation}}, &nbsp; &nbsp;
-            Dextrostix: {{object.dextrostix}}, &nbsp; &nbsp;   A1c: {{object.a1c}},  &nbsp; &nbsp;  Peso: {{object.peso}}, &nbsp; &nbsp;   Estatura: {{object.estatura}} &nbsp; &nbsp;
-            IMC: {{object.imc}} &nbsp; &nbsp;   Clasificación Masa Corporal: <b>{{object.climc}},</b> &nbsp; &nbsp;   ASC: {{object.asc}} &nbsp; &nbsp;   
-            Per. Abdominal: {{object.per_abdominal}} cms. </p>
-           
-           <b>DXS:</b> 
-           <p>{{object.dxs | linebreaks}}</p>
+             <p><b>SOMATOMETRIA</b></p>
+             <P>Peso: {{object.peso}}, &nbsp; &nbsp; Estatura: {{object.estatura}}, &nbsp; &nbsp; IMC: {{object.imc}}, &nbsp; &nbsp; ASC: {{object.asc}},
+                &nbsp; &nbsp; Clasificación Masa Corporal: <b>{{object.climc}}</b> </P>
 
-           <b>MANEJO_INICIAL:</b> 
-           <p>{{object.MANEJO_INICIAL | linebreaks}}</p>
 
-           <b>OBSERVACIONES GENERALES:</b>
-           <p>{{object.OBSERVACIONES_GENERALES | linebreaks}}</p>
+             <p><b>LABORATORIOS</b></p>
+             <p>
+                Hb: {{object.hb}} &nbsp; &nbsp; Hto: {{object.hb}} &nbsp; &nbsp; Leucocitos: {{object.leucocitos}} &nbsp; &nbsp; Neutrófilos: {{object.neutrofilos}} 
+                &nbsp; &nbsp; Basófilos: {{object.basofilos}} &nbsp; &nbsp; Esosinófilos: {{object.eosinofilos}} &nbsp; &nbsp; Linfocitos {{object.linfocitos}} 
+             </p>
+             <p>
+                Glucosa: {{object.glucosa}} &nbsp; &nbsp; Urea: {{object.Urea}} &nbsp; &nbsp; Creatinina: {{object.Creatinina}} &nbsp; &nbsp; PCR: {{object.PCR }}
+                &nbsp; &nbsp; DHL: {{object.DHL}} &nbsp; &nbsp; TGP: {{object.TGP}} &nbsp; &nbsp; TGO: {{object.TGO}} &nbsp; &nbsp; Bilirrubinas Tot: {{object.bilirrTot}}
+             </p>
+             <p>
+                Na: {{object.Na}} &nbsp; &nbsp; K: {{object.K}} &nbsp; &nbsp; Ca: {{object.Ca}} &nbsp; &nbsp; Cl: {{object.Cl}} &nbsp; &nbsp; Mg: {{object.Mg}}
+                &nbsp; &nbsp; P: {{object.P}}
+             </p>
+
+
+             <p><b>DESCRIPCIONES RADIOLOGICAS</b></p>
+             <p>
+                {{object.Rx_descripcion}}
+             </p>
+
+
+             <p><b>Anotaciones Generales</b></p>
+             <p>
+                {{object.obs}}
+             </p>
+            
+
+             <p><h3>CONFIRMACION O REESTRUCTURACION DIAGNOSTICA</h3></p>           
+             <p>
+                <b>
+                    {{object.dxs | linebreaks}}
+                </b>
+             </p>
+
+             <p><h3>Reestructuración o Cambios en el Manejo</h3></p>  
+                <p>
+                    {{object.reest_man | linebreaks}}
+                </p>
+
+
+             <p><b>Interconsultantes</b></p>
+                <p>
+                    {{object.interconsultante1}}, &nbsp; &nbsp; {{object.interconsultante2}}, &nbsp; &nbsp; {{object.interconsultante3}}
+                </p>
+
+
+
 
            <p><h3>Observaciones Especiales</h3></p>
            
-           <p>NEUROLOGICO: {{object.NEUROLOGICO}}</p>
-           <p>RESPIRATORIO: {{object.RESPIRATORIO}}</p>
-           <P>HEMODINAMICO: {{object.HEMODINAMICO}}</P>
-           <p>INFECCIOSO: {{object.INFECCIOSO}} </p>
+                <p>NEUROLOGICO: {{object.NEUROLOGICO}}</p>
+                <p>RESPIRATORIO: {{object.RESPIRATORIO}}</p>
+                <P>HEMODINAMICO: {{object.HEMODINAMICO}}</P>
+                <p>INFECCIOSO: {{object.INFECCIOSO}} </p>
+                <p>METABOLICO: {{object.METABOLICO}} </p>
+                <p>VALORES ANORMALES: {{object.VALORES}} </p>
 
            <b>Fecha de Realización:</b> <p><b>{{ object.timestamp }}</b></p>
            <b>Ultima Actualización:</b> <p><b>{{ object.update }}</b></p>

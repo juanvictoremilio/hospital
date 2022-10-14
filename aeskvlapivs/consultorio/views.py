@@ -247,6 +247,27 @@ class UrgenciasDeleteView(DeleteView):
 
 
 # URGENCIAS REEVALUACIONES
+def uploadFileUrgenciasReev(request):
+    if request.method == "POST":
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES['Labs1', 'Labs2', 'Labs3', 'Labs4', 'Labs5', 
+        "image1", 'image2', 'image3', 'image4', 'image5',]
+
+        # Saving the information in the database
+        document = models.Urgencias_Reevaluaciones(
+            title = fileTitle,
+            uploadedFile = uploadedFile
+        )
+        document.save()
+
+    documents = models.Urgencias_Reevaluaciones.objects.all()
+
+    return render(request, "consultorio/urgencias_reevaluaciones_list.html", context = {
+        "urgencias_revaluaciones": documents
+    })
+
+
 
 class SearchUrgenciasReevResultsView(ListView):
     model = Urgencias_Reevaluaciones
@@ -265,6 +286,16 @@ class UrgenciasReevListView(ListView):
 
 class UrgenciasReevDetail(DetailView):
     model = Urgencias_Reevaluaciones
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class UrgReevCreate(CreateView):
+    model = Urgencias_Reevaluaciones
+    form_class = UrgReevForm
+    success_url = reverse_lazy('consultorio:urg_eval_subs')
+
+
+
 
 
 
