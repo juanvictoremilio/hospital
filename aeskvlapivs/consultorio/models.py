@@ -2,6 +2,7 @@
 from ast import Break, Continue, If, Return
 from curses import A_BLINK
 from email.policy import default
+from logging import PlaceHolder
 import os
 from datetime import date
 from sre_parse import Verbose
@@ -754,21 +755,21 @@ class Urgencias_Reevaluaciones(models.Model):
     POSITIVO = 'POSITIVO'
     NEGATIVO = 'NEGATIVO' 
     AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
-    vent_mec = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE, verbose_name='Ventilación Mecánica')
+    vent_mec = models.CharField(max_length=10, blank=True, null=True, choices=AFIRMACION_SIMPLE, default='NEGATIVO', verbose_name='Ventilación Mecánica')
 
         #unsupported operand type(s) for /: 'NoneType' and 'float'
     # PARAMETROS VENTILADOR MECANICO
-    VAC = 'VAC'
-    PAC = 'PAC'
-    VSIMC = 'VSIMC'
-    PSIMC = 'PSIMC' 
-    Psup = 'Psup'
-    MOD = [(VAC, 'VAC'), (PAC, 'PAC'), (VSIMC, 'VSIMC'), (PSIMC, 'PSIMC'), (Psup, 'Psup')]
+    VAC = 'Mode VAC'
+    PAC = 'Mode PAC'
+    VSIMC = 'ModeVSIMC'
+    PSIMC = 'Mode PSIMC' 
+    Psup = 'Mode Psup'
+    MOD = [(VAC, 'Mode VAC'), (PAC, 'Mode PAC'), (VSIMC, 'Mode VSIMC'), (PSIMC, 'Mode PSIMC'), (Psup, 'Mode Psup')]
     
-    mode = models.CharField(max_length=7, choices=MOD, blank=True, null=True, verbose_name='Modo Ventilatorio')
+    mode = models.CharField(max_length=15, choices=MOD, blank=True, null=True, verbose_name='Modo Ventilatorio')
     
     FrecResp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Frec, Resp.')
-    FrIO2 = models.FloatField(blank=True, null=True, default=.21)
+    FrIO2 = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True, default=.21)
     Vt = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Vol. Corriente (Vt)')
     PEEP = models.PositiveSmallIntegerField(blank=True, null=True,default=1)
     Sens = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=2)
@@ -814,7 +815,7 @@ class Urgencias_Reevaluaciones(models.Model):
     Lactato= models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
     sO2 = models.DecimalField(blank=True, null=True, decimal_places=1, max_digits=4, verbose_name='sO2')
 
-    PaFI = models.DecimalField(decimal_places=2, max_digits=6, blank=True, null=True)
+    PaFI = models.DecimalField(decimal_places=2, max_digits=6, blank=True, null=True, default=1.0)
 
     @property
     def sira(self):
@@ -982,11 +983,11 @@ class Urgencias_Reevaluaciones(models.Model):
     somnoliento = '-1 somnoliento'
     sedación_leve = '-2 sedación leve'
     sedación_moderada = '-3 sedación moderada'
-    sedación_profunda = '-4 sedación profunda'
+    sedación_profunda = 'RASS -4 sedación profunda'
     sin_respuesta = '-5 sin respuesta'
-    SEDACION = [(combativo, '+4 Combativo'), (muy_agitado, '+3 Muy agitado'), (agitado, '+2 Agitado'), (inquieto, '+1 Inquieto'),
-    (despierto_tranquilo, '0 Despierto y tranuilo'), (somnoliento, '-1 Somnoliento'), (sedación_leve, '-2 Sedación leve'), (sedación_moderada, '-3 Sedación moderada'),
-    (sedación_profunda, '-4 Sedación profunda'), (sin_respuesta, '-5 Sin respuesta') ]
+    SEDACION = [(combativo, 'RASS +4 Combativo'), (muy_agitado, 'RASS +3 Muy agitado'), (agitado, 'RASS +2 Agitado'), (inquieto, 'RASS +1 Inquieto'),
+    (despierto_tranquilo, 'RASS 0 Despierto y tranuilo'), (somnoliento, 'RASS -1 Somnoliento'), (sedación_leve, 'RASS -2 Sedación leve'), (sedación_moderada, 'RASS -3 Sedación moderada'),
+    (sedación_profunda, 'RASS -4 Sedación profunda'), (sin_respuesta, 'RASS -5 Sin respuesta') ]
     RASS = models.CharField(max_length=30, choices=SEDACION, blank=True, null=True)
     obs_neur = models.TextField(blank=True, null=True, verbose_name='Complemento observaciones Neurològicas')
 

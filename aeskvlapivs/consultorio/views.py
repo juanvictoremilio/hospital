@@ -3,14 +3,13 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from . import models
 from django.db.models import Q
-from .models import Paciente, Urgencias, Urgencias_Reevaluaciones
+from .models import Paciente, Reevaluacion, Urgencias, Urgencias_Reevaluaciones
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
-from .models import Paciente, Reevaluacion
 from .forms import PacienteForm, ReevaluacionForm, UrgenciasForm, UrgReevForm
 
 class StaffRequiredMixin(object):
@@ -264,14 +263,8 @@ class UrgenciasReevListView(ListView):
     model = Urgencias_Reevaluaciones
     template_name = 'urgencias_reevaluaciones_list.html'
 
-class UrgReevDetailView(DetailView):
+class UrgenciasReevDetail(DetailView):
     model = Urgencias_Reevaluaciones
-
-@method_decorator(staff_member_required, name='dispatch')
-class UrgenciasReevCreate(CreateView):
-    model = Urgencias_Reevaluaciones
-    form_class = UrgReevForm
-    success_url = reverse_lazy('consultorio:urg_eval_subs')
 
 
 

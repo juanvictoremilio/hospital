@@ -10,59 +10,50 @@
         <h2 style = "color:rgba(0, 0, 128, 0.805);"  class="section-heading mb-4">Reporte Evaluación Subsecuente Urgencias</h2>
         <h4 class="section-heading mb-4">Paciente: {{object.paciente}}</h4>
         <div>
+          <p>Género: {{object.genero}}</p>
+
           <p>Edad: {{object.edad}}</p>
 
-          <P>Género: {{object.genero}} </P>
+          <p style = "color:red;" >{{object.evaluacion_sec}}</p>
 
-          <p>Evaluación secundaria /Subsecuente: <b style = "color:brown">{{object.evaluacion_sec}}</b></p>
-          
-          <p><b>DIAGNOSTICOS PREVIOS:</b></p> 
-          <p><b>{{object.dxs_previos |linebreaks|safe}}</b></p>
+          <b>DIAGNOSTICOS PREVIOS</b>
+          <P>{{object.dxs_previos | linebreaks | safe}}</P>
 
-          <p><b>SITUACION ACTUAL:</b></p>
-          <p>{{object.sit_actual|linebreaks|safe}}</p>
+           <b>SITUACION ACTUAL: </b> 
+            <p>{{object.sit_actual|linebreaks|safe}} </p>
 
-          <h4 class="section-heading mb-4">RESPIRATORIO</h4>
-          <P>FR: {{object.fr}} &nbsp; &nbsp; O2: {{object.O2}} lts/min, &nbsp; &nbsp;SaO2: {{object.saturacion}}</P>
+            <p><b>STATUS NEUROLOGICO</b></p>
+            <p><b>GLASGOW: {{object.ESCALA_DE_GLASGOW}}, &nbsp; &nbsp; AVPU: {{object.AVPU}}</b> &nbsp; &nbsp; Sedación: {{object.Sedacion}} 
+             &nbsp; &nbsp; {{object.meds_dosis}}  &nbsp; &nbsp; {{object.RASS}} &nbsp; &nbsp; {{object.obs_neur}}</p>
 
-          <p>Ventilación Mecánica: <b>{{object.vent_mec}}</b></p>
-
-          <p>Mode: {{object.mode}}, &nbsp; &nbsp; FIO2: {{object.FrIO2}} &nbsp; &nbsp; FR: {{object.FrecResp}} &nbsp; &nbsp;Vt: {{object.Vt}} &nbsp; &nbsp; PEEP: {{object.PEEP}} &nbsp; &nbsp;
-            Sens: {{object.Sens}} &nbsp; &nbsp; Pinsp: {{object.Pinsp}} &nbsp; &nbsp; Tinsp: {{object.Tinsp}} </p>
-          <p>Cuadrantes afectados en Rx de Tórax: {{object.Rx_Torax}}, &nbsp; &nbsp; Complianza Pulmonar: {{object.lung_compl}} &nbsp; &nbsp;  Presión Intratorácica: <b>{{object.pit}} Kgs </b></p>
-          <p>GASES ARTERIALES: pH: {{object.pH}} &nbsp; &nbsp; pCO2: {{object.pCO2}}  &nbsp; &nbsp; pO2: {{object.pO2}}  &nbsp; &nbsp; HCO3: {{object.HCO3}} &nbsp; &nbsp; EB: {{object.EB}} 
-            &nbsp; &nbsp; Lactato: {{object.Lactato}} &nbsp; &nbsp; sO2: {{object.sO2}} </p>
-          <p>PaFI: <b>{{object.PaFI}}</b></p>
-          <p> {{object.compl_ex}} </p>
-          
-          <h4 class="section-heading mb-4">HEMODINAMICO</h4>
-          <p>Diaforesis: {{object.Diaforesis}}, &nbsp; &nbsp; FC: {{object.fc}} &nbsp; &nbsp; Tensión sistólica: {{object.tension_sistolica}} &nbsp; &nbsp; 
-            Tensión diastólica: {{object.tension_diastolica}} &nbsp; &nbsp; PAM: <b>{{object.pam}}</b> &nbsp; &nbsp; PVC: {{object.pvc}}
-          </p>
-          <p>Uso de aminas: {{object.uso_aminas}} &nbsp; &nbsp; {{object.esp_aminas|linebreaks|safe}}</p>
-          <p>Uso de antihipertensivos: {{object.antihipert}} &nbsp; &nbsp; {{object.esp_aht|linebreaks|safe}}</p>
-          
-          <p>
-            Ingreso IV: {{object.ingreso_iv}} mls &nbsp; &nbsp; Diuresis: {{object.diuresis}} mls&nbsp; &nbsp; Balance: <b>{{object.balance}} mls</b>
-          </p>
-
-          <h4 class="section-heading mb-4">NEUROLOGICO</h4>
-
-          <p>AVPU: {{object.AVPU}}, &nbsp; &nbsp; Glasgow:  {{object.ESCALA_DE_GLASGOW}} &nbsp; &nbsp; Sedación: {{object.Sedacion}} </p>
-          {{object.meds_dosis | linebreaks | safe}}
-
-          <p>RASS: {{object.RASS}}</p>
-
-          {{object.obs_neur | linebreaks | safe}}
-
-          <h4 class="section-heading mb-4">METABOLICO</h4>
-
-          <br><br>
+             <p><b>STATUS RESPIRATORIO</b></p>
+             <p>Ventilación Mecánica: {{object.vent_mec}},  &nbsp; &nbsp; {{object.mode}}, &nbsp; &nbsp; FI02 {{object.FrIO2}},
+                &nbsp; &nbsp; FR: {{object.FrecResp}} &nbsp; &nbsp; Vt: {{object.Vt}} &nbsp; &nbsp; PEEP: {{object.PEEP}} &nbsp; &nbsp; &nbsp;  SaO2: {{object.saturacion }}
+                &nbsp; &nbsp; &nbsp; Sens: {{object.Sens}} &nbsp; &nbsp;  Pinsp: {{object.Pinsp}}, &nbsp; &nbsp;  Tinsp: {{object.Tinsp}} 
+                &nbsp; &nbsp; Cuadrantes Afectados en Rx de Tórax: {{object.Rx_Torax}} &nbsp; &nbsp; Complianza Pulmonar: {{object.lung_compl}} 
+                &nbsp; &nbsp; Presión Intratorácica Total (Ojo: son Kgs): {{object.pit}}  </p>
+             <p>GASES ARTERIALES: pH: {{object.pH}} &nbsp; &nbsp; pCO2: {{object.pCO2}} &nbsp; &nbsp;  pO2: {{object.pO2}}  &nbsp; &nbsp; 
+                HCO3: {{object.HCO3}} &nbsp; &nbsp; EB: {{object.EB }} sO2: {{object.sO2}} &nbsp; &nbsp; <b>PaFI: {{object.PaFI}} </b>  </p>
+                <p> {{object.compl_ex}} </p>
 
 
-          <h4 class="section-heading mb-4">Observaciones Especiales</h4>
+           <p><b>SIGNOS VITALES:</b>FR: {{object.fr}}, &nbsp; &nbsp;  FC {{object.fc}}, &nbsp; &nbsp;   TA {{object.tension_sistolica}}/{{object.tension_diastolica}}, &nbsp; &nbsp;    
+            <b>PAM: {{object.pam}},</b> &nbsp; &nbsp;  Temp: {{object.temp}}, &nbsp; &nbsp;   Sa02: {{object.saturation}}, &nbsp; &nbsp;
+            Dextrostix: {{object.dextrostix}}, &nbsp; &nbsp;   A1c: {{object.a1c}},  &nbsp; &nbsp;  Peso: {{object.peso}}, &nbsp; &nbsp;   Estatura: {{object.estatura}} &nbsp; &nbsp;
+            IMC: {{object.imc}} &nbsp; &nbsp;   Clasificación Masa Corporal: <b>{{object.climc}},</b> &nbsp; &nbsp;   ASC: {{object.asc}} &nbsp; &nbsp;   
+            Per. Abdominal: {{object.per_abdominal}} cms. </p>
+           
+           <b>DXS:</b> 
+           <p>{{object.dxs | linebreaks}}</p>
 
-               
+           <b>MANEJO_INICIAL:</b> 
+           <p>{{object.MANEJO_INICIAL | linebreaks}}</p>
+
+           <b>OBSERVACIONES GENERALES:</b>
+           <p>{{object.OBSERVACIONES_GENERALES | linebreaks}}</p>
+
+           <p><h3>Observaciones Especiales</h3></p>
+           
            <p>NEUROLOGICO: {{object.NEUROLOGICO}}</p>
            <p>RESPIRATORIO: {{object.RESPIRATORIO}}</p>
            <P>HEMODINAMICO: {{object.HEMODINAMICO}}</P>

@@ -4,8 +4,8 @@ from django.conf.urls.static import static
 from . import views
 from .views import (PacienteListView, PacienteDetailView, PacienteCreate, PacienteUpdate, PacienteDeleteView, SearchResultsView, 
 SearchReevResultsView, ReevaluacionListView, ReevalucionDetailView, ReevaluacionUpdate, ReevaluacionCreate, ReevalucionDeleteView, SearchUrgenciasReevResultsView, 
-UrgenciasListView, UrgenciasCreate, UrgenciasDetailView, UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, 
-UrgenciasReevListView, UrgReevDetailView, UrgenciasReevCreate,SearchUrgenciasReevResultsView
+UrgenciasListView, UrgenciasCreate, UrgenciasDetailView, UrgenciasReevDetail, UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, 
+UrgenciasReevListView, SearchUrgenciasReevResultsView
 )
 
 
@@ -38,9 +38,9 @@ consultorio_patterns = ([
     path("upload_urgencias", views.uploadFileUrgencias, name = "uploadFile_urgencias"),
 
     path('urgencias_eval_secs/', UrgenciasReevListView.as_view(), name='urg_eval_subs'),
-    path('create_urgreev/', UrgenciasReevCreate.as_view(), name='eval_subsc_urgencias'),
-    path('<int:pk>/<slug:paciente_slug>', UrgReevDetailView.as_view(), name='urgencias_reev'),
-    path('search_urgenciasreev/', SearchUrgenciasReevResultsView.as_view(), name='search_results_urgenciasreev'),
+    path('search_urgreev/', SearchUrgenciasReevResultsView.as_view(), name= 'search_results_urgenciasreev'),
+    path('<int:pk>/<slug:urgencias_reevaluaciones_slug>', UrgenciasReevDetail.as_view(), name='urgencias_reev_detail'),
+    
     
 
    
