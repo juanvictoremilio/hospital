@@ -22,7 +22,10 @@
             <p>{{urg_reev.sit_actual|striptags|safe|truncatechars:"200"}}</p>
             <p>{{urg_reev.dxs_previos|linebreaks}}</p>
             {% if request.user.is_staff %}
-            <p><a href="{% url 'consultorio:urgencias_reev_detail' urg_reev.id urg_reev.paciente|slugify %}">Resumen</a> |
+            <p><a href="{% url 'consultorio:urgencias_reev_detail' urg_reev.id urg_reev.paciente|slugify %}">Resumen</a> &nbsp; &nbsp;
+              <a href="{% url 'consultorio:update_urgenciareev' urg_reev.id %}">Editar</a> &nbsp; &nbsp;
+              <a href="{% url 'consultorio:delete_urgenciareev' urg_reev.id %}">Eliminar</a>
+
             
            
               

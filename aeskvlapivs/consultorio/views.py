@@ -295,6 +295,26 @@ class UrgReevCreate(CreateView):
     success_url = reverse_lazy('consultorio:urg_eval_subs')
 
 
+@method_decorator(staff_member_required, name='dispatch')
+class UrgenciasReevUpdate(UpdateView):
+    model = Urgencias_Reevaluaciones
+    form_class = UrgReevForm
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse_lazy('consultorio:update_urgenciareev', args=[self.object.id]) + '?ok'
+
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class UrgReevDelete(DeleteView):
+    model = Urgencias_Reevaluaciones
+    success_url = reverse_lazy('consultorio:urg_eval_subs')
+
+
+
+  
+
 
 
 
