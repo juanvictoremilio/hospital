@@ -22,6 +22,9 @@
            OBSERVACIONES: <p>{{paciente.obs | linebreaks}}</p>
            DXS: <p>{{paciente.diagnosis | linebreaks}}</p>
            MANEJO: <p>{{paciente.txs | linebreaks}}</p>
+           INTERCONSULTANTE: <p>{{paciente.especialidad}}</p>
+           <p>ESPECIFIQUE OTRO INTERCONSULTANTE: {{paciente.esp_otro}} </p>
+           <p> CONSIDERACIONES ESPECIALES: {{paciente.sp_consideration}} </p>
            Fecha de Realización: <p>{{ paciente.timestamp }}</p>
            Ultima Actualización: <p>{{ paciente.update }}</p>
 
@@ -114,7 +117,12 @@
            <h3 class="section-heading mb-4">MANEJOS Y TRATAMIENTOS</h3>
            <p>{{paciente.txs | linebreaks}}</p>
 
-           <br>
+            <br>
+
+            <h3 class="section-heading mb-4">CONSIDERACIONES ESPECIALES</h3>
+            <p> {{paciente.sp_consideration}} </p>
+ 
+             <br> 
 
            <h3 class="section-heading mb-4">ADENDUMS</h3>
            <P>{{paciente.adendums | linebreaks}}</P>

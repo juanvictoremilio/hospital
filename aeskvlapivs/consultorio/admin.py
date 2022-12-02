@@ -15,7 +15,7 @@ admin.site.index_title = "Bienvenido a tu escritorio médico"
 
 class PacienteAdmin(admin.ModelAdmin):
 	list_display = ['name', 'age', 'phone', 'email','diagnosis','dextrostix', 'a1c', 'imc', 'climc','timestamp', 'update']
-	readonly_fields = ('timestamp', 'update')
+	readonly_fields = ('timestamp', 'update', 'age')
 	search_fields = ('name', 'phone', 'email')
 	list_filter = ['entitlement']
 

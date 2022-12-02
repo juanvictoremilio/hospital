@@ -93,6 +93,7 @@ class Paciente(models.Model):
     FUR = models.DateField(blank=True, null=True)
     Gestas = models.PositiveSmallIntegerField(blank=True, null=True)
     Partos = models. PositiveSmallIntegerField(blank=True, null=True)
+    Cesareas = models. PositiveSmallIntegerField(blank=True, null=True, verbose_name='Cesáreas')
     pap = models.DateField(blank=True, null=True, verbose_name='Último Pappaniclocaou')
     mast = models.DateField(blank=True, null=True, verbose_name='Última mastografía')
     obsgin = models.TextField(blank=True, null=True, verbose_name='Observaciones Genecoobstétricas')
@@ -106,7 +107,7 @@ class Paciente(models.Model):
 
     # Situación actual y Exploración
 
-    actual_situation = models.TextField (blank=True, null=True, verbose_name="Situación Actual y Exploración")
+    actual_situation = models.TextField (blank=True, null=True, verbose_name="Hábitus exterior y Exploración")
 
     tension_sistolica = models.IntegerField(blank=True, null=True, default=0)
     tension_diastolica = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
@@ -164,13 +165,13 @@ class Paciente(models.Model):
     OTRO = 'Otro'
     IC = [(MED_GRAL, 'Medicina General'), (URGENCIAS, 'Urgencias'), (MEDINT, 'Medicina Interna'), (INT, 'Intensivista'), (CIR, 'Cirugía'), (CARD, 'Cardiología'), (NEUR, 'Neurología'), (NEURQX, 'Neurocirugía'),
     (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (GAST, 'Gastroenterología'), (NEF, 'Nefrología'), (OTRO, 'Otro')]
-    especialidad = models.CharField(max_length=20, choices=IC, blank=True, null=True)
+    especialidad = models.CharField(max_length=20, choices=IC, blank=True, null=True, verbose_name='Especialidad de Interconsulta')
 
-    esp_otro = models.CharField(blank=True, null=True, max_length=50, verbose_name='Especifique otro')
+    esp_otro = models.CharField(blank=True, null=True, max_length=50, verbose_name='Especifique otro interconsultante')
 
     adendums = models.TextField(blank=True, null=True)
 
-    RECOMENDACIONES = models.CharField(max_length=150, blank=True, null=True)
+    sp_consideration = models.CharField(max_length=150, blank=True, null=True, verbose_name='Consideraciones Especiales')
 
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name='Fecha de Registro')
     update = models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')
@@ -343,7 +344,7 @@ class Paciente(models.Model):
         self.pam = self.presion_media
         self.dxs_antec = (self.tabaquismo, self.alcoholismo, self.alergias, self.dislpid, 
         self.diabetes, self.hipertension, self.cardiopatia, self.insuf_vasc, self.enf_pulm, self.onc)
-        self.RECOMENDACIONES = self.clhta, self.qsofa
+        self.sp_consideration = self.clhta, self.qsofa
         super(Paciente, self).save()
 
     

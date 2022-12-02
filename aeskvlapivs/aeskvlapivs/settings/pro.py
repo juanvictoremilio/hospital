@@ -3,7 +3,7 @@ DEBUG = False
 ADMINS = (
     ('Víctor Sánchez', 'direccion@amcare.com-mx'),
 )
-ALLOWED_HOSTS = ['*eskvlapivs.com', 'www.aeskvlapivs.com']
+ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

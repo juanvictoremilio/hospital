@@ -10,11 +10,11 @@ class PacienteForm(forms.ModelForm):
      'religion', 'sport', 'civil_status', 'adress', 'email', 'phone', 'entitlement', 'specify',
      'insurance', 'immediate_background', 'smoking', 'alcohol', 'drugs_adictions', 'allergies',
      'dislipidemia', 'dm', 'hta', 'inf_ang_de_pecho', 'evc', 'ivp', 'EPOC', 'cancer', 'otras_enf',
-     'Menarca', 'FUR', 'Gestas', 'pap', 'mast', 'obsgin',
+     'Menarca', 'FUR', 'Gestas', 'Partos', 'Cesareas', 'pap', 'mast', 'obsgin',
      'cir_previas', 'obs', 'actual_situation', 'tension_sistolica', 'tension_diastolica', 'fc','fr',
      'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura', 'per_abdominal', 'Imagenología1',
-     'Imagenología2', 'Imagenología3', 'Labs1', 'Labs2', 'recetas', 'diagnosis', 'obs', 'txs',
-     'adendums', 
+     'Imagenología2', 'Imagenología3', 'Labs1', 'Labs2', 'recetas', 'diagnosis', 'obs', 'txs', 'especialidad',
+     'esp_otro', 'adendums',
 
     ]
         
