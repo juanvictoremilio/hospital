@@ -13,6 +13,7 @@
           <p>Edad: {{paciente.age}}</p>
            ANTECEDENTES INMEDIATOS: <p>{{paciente.immediate_background|linebreaks|safe}} </p>
            OTROS ANTECEDENTES: <p>{{paciente.otras_enf|linebreaks}}</p>
+           LISTA DE MEDICAMENTOS ACTUALES: <P> {{paciente.medications_list}} </P>
            EXPLORACION FISICA: <p>{{paciente.actual_situation |linebreaks}}</p>
            SIGNOS VITALES: <p>FC {{paciente.fc}}, &nbsp; &nbsp;   TA {{paciente.tension_sistolica}}/{{paciente.tension_diastolica}}, &nbsp; &nbsp;    
             PAM: {{paciente.pam}}, &nbsp; &nbsp;   FR: {{paciente.fr}},  &nbsp; &nbsp;  Temp: {{paciente.temp}}, &nbsp; &nbsp;   Sa02: {{paciente.saturation}}, &nbsp; &nbsp;

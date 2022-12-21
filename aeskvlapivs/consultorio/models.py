@@ -98,6 +98,7 @@ class Paciente(models.Model):
     mast = models.DateField(blank=True, null=True, verbose_name='Última mastografía')
     obsgin = models.TextField(blank=True, null=True, verbose_name='Observaciones Genecoobstétricas')
 
+    medications_list = models.TextField(blank=True, null=True, verbose_name='Lista de Medicamentos actuales')
 
     cir_previas = models.CharField(max_length=200, blank=True, null=True, verbose_name='Cirugías previas')
 
