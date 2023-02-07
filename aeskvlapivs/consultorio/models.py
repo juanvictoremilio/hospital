@@ -319,7 +319,7 @@ class Paciente(models.Model):
 
     @property
     def clhta(self):
-        if self.tension_diastolica >90 and self.tension_diastolica< 104:
+        if self.tension_diastolica >89 and self.tension_diastolica< 104:
             return 'Hipertensión Leve ' 
 
         elif self.tension_diastolica > 104 and self.tension_diastolica< 114:
@@ -732,7 +732,7 @@ class Urgencias_Reevaluaciones(models.Model):
     ev_6 = 'Sexta Evaluación'
     ev_7 = 'Séptima Evaluación'
     ev_8 = 'Octava Evaluación'
-    REEV_SECS = [(ev_2, 'Segunda Evaluación'), (ev_3, 'Tercera Evalaución'),
+    REEV_SECS = [(ev_2, 'Segunda Evaluación'), (ev_3, 'Tercera Evaluación'),
     (ev_4, 'Cuarta Evaluación'), (ev_5, 'Quinta Evaluación'), (ev_6, 'Sexta Evaluación'), (ev_7, 'Séptima Evaluación'),
     (ev_8, 'Octava Evaluación')]
 
@@ -790,23 +790,23 @@ class Urgencias_Reevaluaciones(models.Model):
     def compliance(self):
         return self.Vt / self.Pinsp
 
-    pit = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Presión Intratorácica Total', help_text='No escriba aquí, OJO: Son Kgs.')
+    pit = models.CharField(max_length=90, blank=True, null=True, verbose_name='Presión Intratorácica Total', help_text='No escriba aquí, OJO: Son Kgs.')
     @property
     def PresionIT(self):
         if self.Rx_Torax == None:
-            return self.Pinsp *70
+            return 'Presión Intratorácica: ' + str(self.Pinsp *70)
 
         if self.Rx_Torax == 1:
-            return self.Pinsp * 60
+            return 'Presión Intratorácica: ' + str(self.Pinsp * 60)
 
         elif self.Rx_Torax == 2:
-            return self.Pinsp * 50
+            return 'Presión Intratorácica: ' + str(self.Pinsp * 50)
 
         elif self.Rx_Torax == 3:
-            return self.Pinsp * 28
+            return 'Presión Intratorácica: ' + str(self.Pinsp * 28)
 
         elif self.Rx_Torax == 4:
-            return self.Pinsp * 21
+            return 'Presión Intratorácica: ' + str(self.Pinsp * 21)
 
 # GASES ARTERIALES
     pH = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=3)
@@ -1095,7 +1095,7 @@ class Urgencias_Reevaluaciones(models.Model):
         self.imc = self.masa_corporal
         self.asc = self.area_sup_corp
         self.climc = self.imc_clasif
-        self.RESPIRATORIO = self.sira
+        self.RESPIRATORIO = self.sira, self.PresionIT
         self.pam = self.presion_media
         self.balance = self.fbalance
         self.ESCALA_DE_GLASGOW = self.glasgow
