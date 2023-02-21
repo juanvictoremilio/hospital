@@ -753,6 +753,18 @@ class Urgencias_Reevaluaciones(models.Model):
     fr = models.IntegerField(default=0, blank=True, null=True, verbose_name='Frec. Resp')
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min si es el caso')
     saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
+    SaFI02 = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True, default=.21)
+    SaPaFI = models.DecimalField(decimal_places=2, max_digits=6, blank=True, null=True, default=1.0)
+
+    @property
+    def fio2(self):
+        return (3 * self.O2 + 21) / 100
+
+    @property
+    def SaInd_O2(self):
+        return self.saturacion / self.SaFI02
+
+    
     
     POSITIVO = 'POSITIVO'
     NEGATIVO = 'NEGATIVO' 
@@ -771,7 +783,7 @@ class Urgencias_Reevaluaciones(models.Model):
     mode = models.CharField(max_length=15, choices=MOD, blank=True, null=True, verbose_name='Modo Ventilatorio')
     
     FrecResp = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Frec, Resp.')
-    FrIO2 = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True, default=.21)
+    FIO2 = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True, default=.21)
     Vt = models.PositiveSmallIntegerField(blank=True, null=True, default=1, verbose_name='Vol. Corriente (Vt)')
     PEEP = models.PositiveSmallIntegerField(blank=True, null=True,default=1)
     Sens = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=2)
@@ -826,7 +838,7 @@ class Urgencias_Reevaluaciones(models.Model):
 
     @property
     def ind_O2(self):
-        return self.pO2 / self.FrIO2
+        return self.pO2 / self.FIO2
 
     compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemente exploración torácica')
 
@@ -1092,6 +1104,8 @@ class Urgencias_Reevaluaciones(models.Model):
 
 
     def save(self):
+        self.SaFI02 = self.fio2
+        self.SaPaFI = self.SaInd_O2
         self.imc = self.masa_corporal
         self.asc = self.area_sup_corp
         self.climc = self.imc_clasif

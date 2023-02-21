@@ -92,8 +92,8 @@ class UrgenciasForm(forms.ModelForm):
 class UrgReevForm(forms.ModelForm):
     class Meta:
         model = Urgencias_Reevaluaciones
-        fields = ['paciente', 'edad', 'genero', 'evaluacion_sec', 'dxs_previos', 'sit_actual', 'fr', 'O2', 'saturacion', 'vent_mec', 'mode', 'FrecResp',
-        'FrIO2', 'Vt', 'PEEP', 'Sens', 'Pinsp', 'Tinsp', 'compl_ex', 'Rx_Torax', 'pH', 'pCO2', 'pO2', 'Diaforesis',
+        fields = ['paciente', 'edad', 'genero', 'evaluacion_sec', 'dxs_previos', 'sit_actual', 'fr', 'O2', 'saturacion', 'SaFI02', 'SaPaFI', 'vent_mec', 'mode', 'FrecResp',
+        'Vt', 'PEEP', 'Sens', 'Pinsp', 'Tinsp', 'compl_ex', 'Rx_Torax', 'pH', 'pCO2', 'pO2', 'FIO2', 'Diaforesis',
         'fc', 'tension_sistolica', 'tension_diastolica', 'dextrostix', 'temp', 'peso', 'estatura', 'per_abdominal',
         'AVPU', 'apertura_ocular', 'Respuesta_Verbal', 'Respuesta_Motora', 'Sedacion', 'meds_dosis', 'RASS', 'hb', 'hto', 'leucocitos', 'neutrofilos',
         'basofilos', 'eosinofilos', 'linfocitos', 'glucosa', 'Urea', 'Creatinina', 'PCR', 'DHL', 'TGP', 'TGO', 'bilirrTot', 'Na', 'K', 'Ca','Mg',

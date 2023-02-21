@@ -1,4 +1,4 @@
-#!/Users/Victor/escritorio3/myenv/bin/python3
+#!/Users/Victor/hospital-1/myenv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
