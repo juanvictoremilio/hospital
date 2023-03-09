@@ -12,8 +12,8 @@ class PacienteForm(forms.ModelForm):
      'dislipidemia', 'dm', 'hta', 'inf_ang_de_pecho', 'evc', 'ivp', 'EPOC', 'cancer', 'otras_enf',
      'Menarca', 'FUR', 'Gestas', 'Partos', 'Cesareas', 'pap', 'mast', 'obsgin', 'medications_list',
      'cir_previas', 'obs', 'actual_situation', 'tension_sistolica', 'tension_diastolica', 'fc','fr',
-     'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura', 'per_abdominal', 'Imagenología1',
-     'Imagenología2', 'Imagenología3', 'Labs1', 'Labs2', 'recetas', 'diagnosis', 'obs', 'txs', 'especialidad',
+     'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura', 'per_abdominal', 'Doc1',
+     'Doc2', 'Doc3', 'Doc4', 'Doc5', 'recetas', 'diagnosis', 'obs', 'txs', 'especialidad',
      'esp_otro', 'adendums',
 
     ]
@@ -48,7 +48,7 @@ class ReevaluacionForm(forms.ModelForm):
         model = Reevaluacion
         fields = ['paciente', 'genero', 'age', 'dxs_previos', 'immediate_background',
         'tension_sistolica', 'tension_diastolica', 'fc', 'fr', 'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura',
-        'per_abdominal', 'expl', 'Imagenología1', 'Imagenología2', 'Imagenología3', 'Labs1', 'Labs2',
+        'per_abdominal', 'expl', 'Doc1', 'Doc2', 'Doc3', 'Doc4', 'Doc5',
         'recetas', 'diagnosis', 'obs', 'txs', 
 
     ]
@@ -71,7 +71,8 @@ class UrgenciasForm(forms.ModelForm):
         model = Urgencias
         fields = ['nombre', 'edad','genero', 'im_bkground', 'other_bkground', 'fr', 'O2', 'saturacion', 'fc', 'tension_sistolica', 'tension_diastolica', 'Diaforesis',
         'AVPU', 'apertura_ocular', 'Respuesta_Verbal', 'Respuesta_Motora', 'dextrostix', 'temp', 'peso', 'estatura', 'per_abdominal',
-         'expl', 'dxs', 'MANEJO_INICIAL', 'OBSERVACIONES_GENERALES' ]
+         'expl', 'dxs', 'MANEJO_INICIAL', 'Doc1', 'Doc2', 'Doc3', 'Doc4', 'Doc5', 'recetas', 'OBSERVACIONES_GENERALES', 'especialidad',
+         'esp_otro' ]
 
         raw_id_fields = ('nombre', )
         autocomplete_fields = ('nombre',)

@@ -22,8 +22,10 @@
            <p>{{object.expl |linebreaks}}</p>
 
            <b>GLASGOW: {{object.ESCALA_DE_GLASGOW}}, &nbsp; &nbsp; AVPU: {{object.AVPU}}</b>
-           <p><b>SIGNOS VITALES:</b>FR: {{object.fr}}, &nbsp; &nbsp;  FC {{object.fc}}, &nbsp; &nbsp;   TA {{object.tension_sistolica}}/{{object.tension_diastolica}}, &nbsp; &nbsp;    
-            <b>PAM: {{object.pam}},</b> &nbsp; &nbsp;  Temp: {{object.temp}}, &nbsp; &nbsp;   Sa02: {{object.saturation}}, &nbsp; &nbsp;
+           <p><b>SIGNOS VITALES: </b>FR: {{object.fr}}, &nbsp; &nbsp; O2: {{object.O2 }} lts/min, &nbsp; &nbsp; FiO2: {{object.FiO2}}, &nbsp; &nbsp; 
+                SaO2: {{object.saturacion }}, &nbsp; &nbsp; <b>SpFI: {{object.SpFI}},</b>  &nbsp; &nbsp; FC {{object.fc}}, &nbsp; &nbsp;   
+                TA {{object.tension_sistolica}}/{{object.tension_diastolica}}, &nbsp; &nbsp;    
+                <b>PAM: {{object.pam}},</b> &nbsp; &nbsp;  Temp: {{object.temp}}, &nbsp; &nbsp;   Sa02: {{object.saturation}}, &nbsp; &nbsp;
             Dextrostix: {{object.dextrostix}}, &nbsp; &nbsp;   A1c: {{object.a1c}},  &nbsp; &nbsp;  Peso: {{object.peso}}, &nbsp; &nbsp;   Estatura: {{object.estatura}} &nbsp; &nbsp;
             IMC: {{object.imc}} &nbsp; &nbsp;   Clasificación Masa Corporal: <b>{{object.climc}},</b> &nbsp; &nbsp;   ASC: {{object.asc}} &nbsp; &nbsp;   
             Per. Abdominal: {{object.per_abdominal}} cms. </p>
@@ -37,12 +39,16 @@
            <b>OBSERVACIONES GENERALES:</b>
            <p>{{object.OBSERVACIONES_GENERALES | linebreaks}}</p>
 
+           <p> INTERCONSULTANTE:  <b>{{ object.especialidad }} </b></p>
+
+           <p> ESPECIFIQUE OTRO INTERCONSULTANTE:  {{ object.esp_otro }} </p>
+
            <p><h3>Observaciones Especiales</h3></p>
            
-           <p>NEUROLOGICO: {{object.NEUROLOGICO}}</p>
-           <p>RESPIRATORIO: {{object.RESPIRATORIO}}</p>
-           <P>HEMODINAMICO: {{object.HEMODINAMICO}}</P>
-           <p>INFECCIOSO: {{object.INFECCIOSO}} </p>
+           <p>NEUROLOGICO: <b style = 'color:darkgoldenrod'>{{object.NEUROLOGICO}}</b> </p>
+           <p>RESPIRATORIO: <b style = 'color:darkgoldenrod'> {{object.RESPIRATORIO}} </b> </p>
+           <P>HEMODINAMICO: <b style = 'color:darkgoldenrod'>  {{object.HEMODINAMICO}} </b> </P>
+           <p>INFECCIOSO: <b style = 'color:darkgoldenrod'> {{object.INFECCIOSO}} </b> </p>
 
            <b>Fecha de Realización:</b> <p><b>{{ object.timestamp }}</b></p>
            <b>Ultima Actualización:</b> <p><b>{{ object.update }}</b></p>

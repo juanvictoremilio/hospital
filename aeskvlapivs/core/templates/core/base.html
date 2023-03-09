@@ -24,26 +24,26 @@
           </button>
           <div class="collapse navbar-collapse" id="ned">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == '/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'home' %}">Inicio</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == '/pacientes/' %}active{% endif %}" >
                 <a class="nav-link" href="{% url 'consultorio:pacientes' %}">Pacientes</a>
               </li>
 
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == '/pacientes/urgencias/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'consultorio:pacientes_urgencias' %}">Urgencias</a>
               </li>
 
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == '' %}active{% endif %}">
                 <a class="nav-link" href="">UCI</a>
               </li>
 
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == '' %}active{% endif %}">
                 <a class="nav-link" href="">Hospital</a>
               </li>
 
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == '' %}active{% endif %}">
                 <a class="nav-link" href="">Cirugia</a>
               </li>
 

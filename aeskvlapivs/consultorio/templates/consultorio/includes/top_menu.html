@@ -12,7 +12,7 @@
     </button>
     <div class="collapse navbar-collapse" id="nep">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li class="nav-item {% if request.path == '/pacientes/create/' %}active{% endif %}">
           <a class="nav-link" href="{% url 'consultorio:nuevo_paciente' %}"><i>Nuevo Paciente/Consulta o Internamiento</i></a>
         </li>
         <li class="nav-item" >

@@ -137,12 +137,12 @@ class Paciente(models.Model):
 
     # Paraclínicos
 
-    Imagenología1 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge', blank=True, null=True )
-    Imagenología2 = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge',blank=True, null=True)
-    Imagenología3 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge',blank=True, null=True)
+    Doc1 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge', blank=True, null=True )
+    Doc2 = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge',blank=True, null=True)
+    Doc3 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge',blank=True, null=True)
 
-    Labs1 = models.FileField(upload_to='Paciente/', help_text='formato pdf',blank=True, null=True)
-    Labs2 = models.FileField(upload_to='Paciente/', help_text='formato pdf', blank=True, null=True)
+    Doc4 = models.FileField(upload_to='Paciente/', help_text='formato pdf',blank=True, null=True)
+    Doc5 = models.FileField(upload_to='Paciente/', help_text='formato pdf', blank=True, null=True)
     recetas = models.FileField(upload_to='Paciente/', help_text='formato pdf',blank=True, null=True, verbose_name='Recetas')
 
     #Diagnóticos y Tx
@@ -152,7 +152,7 @@ class Paciente(models.Model):
     txs = models.TextField(blank=True, null=True, verbose_name='Manejos y Tratamientos')
 
     MED_GRAL = 'Medicina General'
-    URGENCIAS = 'Urgenciasas'
+    URGENCIAS = 'Urgencias'
     MEDINT = 'Medicina Interna'
     INT = 'Intensivista'
     CIR = 'Cirugía'
@@ -410,12 +410,12 @@ class Reevaluacion(models.Model):
 
      # Paraclínicos
 
-    Imagenología1 = models.FileField(upload_to='Reevalucion', help_text='formato jpg, jpge', blank=True, null=True)
-    Imagenología2 = models.FileField(upload_to='Reevalucion', help_text='formato jpg, jpge', blank=True, null=True)
-    Imagenología3 = models.FileField(upload_to='Reevalucion', help_text='formato jpg, jpge', blank=True, null=True)
+    Doc1 = models.FileField(upload_to='Reevalucion', help_text='formato jpg, jpge', blank=True, null=True)
+    Doc2 = models.FileField(upload_to='Reevalucion', help_text='formato jpg, jpge', blank=True, null=True)
+    Doc3 = models.FileField(upload_to='Reevalucion', help_text='formato jpg, jpge', blank=True, null=True)
 
-    Labs1 = models.FileField(upload_to='Reevalucion', help_text='formato pdf, jpg, jpge', blank=True, null=True)
-    Labs2 = models.FileField(upload_to='Reevalucion',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Doc4 = models.FileField(upload_to='Reevalucion', help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Doc5 = models.FileField(upload_to='Reevalucion',help_text='formato pdf, jpg, jpge', blank=True, null=True)
     recetas = models.FileField(upload_to='Reevalucion', help_text='formato pdf, jpg, jpge', blank=True, null=True, verbose_name='Recetas')
 
     #Diagnóticos y Tx
@@ -492,7 +492,6 @@ class Reevaluacion(models.Model):
 #URGENCIAS
 
 
-
 class Urgencias(models.Model):
 
 #IDENTIFICACION Y ANTECEDENTES
@@ -513,7 +512,7 @@ class Urgencias(models.Model):
     fr= models.IntegerField(default=0, blank=True, null=True, verbose_name='FR')
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min')
     FiO2 = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, default=.21, help_text= 'No escriba aquí')
-    saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
+    saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02')
     SpFI = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
 
 #HEMODINAMICO
@@ -596,6 +595,34 @@ class Urgencias(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name='Fecha de Registro')
     update = models.DateTimeField(auto_now=True, verbose_name='Fecha de Actualización')
 
+    #PARACLINICOS
+    Doc1 = models.FileField(upload_to='Urgencias', help_text='formato jpg, jpge', blank=True, null=True)
+    Doc2 = models.FileField(upload_to='Urgencias', help_text='formato jpg, jpge', blank=True, null=True)
+    Doc3 = models.FileField(upload_to='Urgencias', help_text='formato jpg, jpge', blank=True, null=True)
+
+    Doc4 = models.FileField(upload_to='Urgencias', help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    Doc5 = models.FileField(upload_to='Urgencias',help_text='formato pdf, jpg, jpge', blank=True, null=True)
+    recetas = models.FileField(upload_to='Urgencias', help_text='formato pdf, jpg, jpge', blank=True, null=True, verbose_name='Recetas')
+
+    MED_GRAL = 'Medicina General'
+    URGENCIAS = 'Urgencias'
+    MEDINT = 'Medicina Interna'
+    INT = 'Intensivista'
+    CIR = 'Cirugía'
+    CARD = 'Cardiología'
+    NEUR = 'Neurología'
+    NEURQX = 'Neurocirugía'
+    ORT = 'Ortopedia'
+    GIN = 'Ginecología'
+    GAST = 'Gastroenterología'
+    NEF = 'Nefrología'
+    OTRO = 'Otro'
+    IC = [(MED_GRAL, 'Medicina General'), (URGENCIAS, 'Urgencias'), (MEDINT, 'Medicina Interna'), (INT, 'Intensivista'), (CIR, 'Cirugía'), (CARD, 'Cardiología'), (NEUR, 'Neurología'), (NEURQX, 'Neurocirugía'),
+    (ORT, 'Ortopedia'), (GIN, 'Ginecología'), (GAST, 'Gastroenterología'), (NEF, 'Nefrología'), (OTRO, 'Otro')]
+    especialidad = models.CharField(max_length=20, choices=IC, blank=True, null=True, verbose_name='Especialidad de Interconsulta')
+
+    esp_otro = models.CharField(blank=True, null=True, max_length=50, verbose_name='Especifique otro interconsultante')
+
 
     @property
     def masa_corporal(self):
@@ -643,6 +670,10 @@ class Urgencias(models.Model):
     def consid(self):
         if self.ESCALA_DE_GLASGOW < 9:
             return 'Considere Manejo Avanzado de Vía Aérea y/o Reevalúe Glasgow'
+    
+        if self.ESCALA_DE_GLASGOW < 15:
+            return 'Vigile Estado de Alerta'
+            
     
     @property
     def shock(self):
@@ -716,9 +747,6 @@ class Urgencias(models.Model):
         ordering = ('-timestamp',)       
         verbose_name_plural='c) Urgencias, Evaluación Primaria'
         
-
-
-
 
 
 
