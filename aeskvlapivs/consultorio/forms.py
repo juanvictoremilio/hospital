@@ -9,7 +9,7 @@ class PacienteForm(forms.ModelForm):
         fields = ['name', 'gender', 'dob', 'nationality', 'etnia', 'scholarship', 'job',
      'religion', 'sport', 'civil_status', 'adress', 'email', 'phone', 'entitlement', 'specify',
      'insurance', 'immediate_background', 'smoking', 'alcohol', 'drugs_adictions', 'allergies',
-     'dislipidemia', 'dm', 'hta', 'inf_ang_de_pecho', 'evc', 'ivp', 'EPOC', 'cancer', 'otras_enf',
+     'dislipidemia', 'dm', 'hta', 'inf_ang_de_pecho', 'evc', 'ivp', 'athma', 'EPOC', 'cancer', 'blood_type', 'otras_enf',
      'Menarca', 'FUR', 'Gestas', 'Partos', 'Cesareas', 'pap', 'mast', 'obsgin', 'medications_list',
      'cir_previas', 'obs', 'actual_situation', 'tension_sistolica', 'tension_diastolica', 'fc','fr',
      'temp', 'saturacion', 'dextrostix', 'a1c', 'peso', 'estatura', 'per_abdominal', 'Doc1',

@@ -87,6 +87,17 @@ class Paciente(models.Model):
     EPOC = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True, verbose_name='Enfermedad Pulmonar Obstructiva Crónica')
     cancer = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True, verbose_name='Cáncer')
     
+    Apos = 'A+'
+    Aneg = 'A-' 
+    Bpos = 'B+'
+    Bneg = 'B-'
+    ABpos = 'AB+'
+    ABneg = 'AB-'
+    Opos = 'O+'
+    Oneg = 'O-'
+    BLOOD_TYPE = [ (Apos, 'A+'), (Aneg, 'A-'), (Bpos, 'B+'), (Bneg, 'B-'), (ABpos, 'AB+'), (ABneg, 'AB-'), (Opos, 'O+'), (Oneg, 'O-') ]
+    blood_type = models.CharField(max_length=100, choices=BLOOD_TYPE, blank=True, null=True, verbose_name='Tipo y Grupo Sanguíneo')
+    
     otras_enf = models.TextField(blank=True, null=True, verbose_name='Complemento, Otros Antecedentes y Enfermedades')
 
     #AGO
@@ -138,13 +149,13 @@ class Paciente(models.Model):
 
     # Paraclínicos
 
-    Doc1 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge', blank=True, null=True )
-    Doc2 = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge',blank=True, null=True)
-    Doc3 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge',blank=True, null=True)
+    Doc1 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge, pdf', blank=True, null=True )
+    Doc2 = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge, pdf',blank=True, null=True)
+    Doc3 = models.FileField(upload_to='Paciente/',help_text='formato jpg, jpge, pdf',blank=True, null=True)
 
-    Doc4 = models.FileField(upload_to='Paciente/', help_text='formato pdf',blank=True, null=True)
-    Doc5 = models.FileField(upload_to='Paciente/', help_text='formato pdf', blank=True, null=True)
-    recetas = models.FileField(upload_to='Paciente/', help_text='formato pdf',blank=True, null=True, verbose_name='Recetas')
+    Doc4 = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge, pdf',blank=True, null=True)
+    Doc5 = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge, pdf', blank=True, null=True)
+    recetas = models.FileField(upload_to='Paciente/', help_text='formato jpg, jpge, pdf',blank=True, null=True, verbose_name='Recetas')
 
     #Diagnóticos y Tx
 
@@ -239,6 +250,9 @@ class Paciente(models.Model):
         if self.inf_ang_de_pecho == 'POS':
             POS = 'CARDIOPATIA ISQUEMICA'
             return POS
+        
+        else:
+            return ''
 
 
     @property
@@ -246,6 +260,9 @@ class Paciente(models.Model):
         if self.evc == 'POS':
             POS = 'ENCEFALOPATIA VASCULAR'
             return POS
+        
+        else:
+            return ''
                 
 
     @property
@@ -264,8 +281,11 @@ class Paciente(models.Model):
     @property
     def onc(self):
         if self.cancer == 'POS':
-            POS = 'ESPECIFIQUE DATOS DEL CANCER'
+            POS = 'ESPECIFIQUE DATOS DEL ANTECEDENTE DE CANCER'
             return POS
+        
+        else:
+            return ''
 
     @property
     def calculateAge(self): 
@@ -296,7 +316,7 @@ class Paciente(models.Model):
             return 'Desnutrición'
         
         elif self.imc >18.5 and self.imc <25:
-            return 'Normal'
+            return 'Peso Normal'
 
         elif self.imc >25 and self.imc < 27:
             return 'Sobrepeso Grado I'
@@ -336,6 +356,9 @@ class Paciente(models.Model):
     def qsofa(self):
         if self.tension_sistolica < 100 and self.AVPU == 'Respuesta Verbal' or self.AVPU == 'Respuesta al Dolor' and self.fr >22:
             return 'qSOFA indica que hay que descartar Sepsis'
+        
+        else:
+            return ''
 
 
     def save(self):
@@ -346,7 +369,9 @@ class Paciente(models.Model):
         self.pam = self.presion_media
         self.dxs_antec = (self.tabaquismo, self.alcoholismo, self.alergias, self.dislpid, 
         self.diabetes, self.hipertension, self.cardiopatia, self.insuf_vasc, self.enf_pulm, self.onc)
-        self.sp_consideration = self.clhta, self.qsofa
+        self.sp_consideration = (
+            self.clhta, self.qsofa, self.imc_clasif, self.onc, self.cardiopatia, self.encefalopatía,
+        )
         super(Paciente, self).save()
 
     
@@ -495,7 +520,7 @@ class Reevaluacion(models.Model):
 
 class Urgencias(models.Model):
 
-#IDENTIFICACION Y ANTECEDENTES
+ #IDENTIFICACION Y ANTECEDENTES
     nombre = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
     FEMENINO= 'FEM'
@@ -509,14 +534,14 @@ class Urgencias(models.Model):
 
     other_bkground = models.TextField(verbose_name='Otros Antecedentes')
 
-#RESPIRATORIO
+ #RESPIRATORIO
     fr= models.IntegerField(default=0, blank=True, null=True, verbose_name='FR')
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min')
     FiO2 = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, default=.21, help_text= 'No escriba aquí')
     saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02')
     SpFI = models.PositiveSmallIntegerField(blank=True, null=True, help_text='No escriba aquí')
 
-#HEMODINAMICO
+ #HEMODINAMICO
     POSITIVO = 'POS'
     NEGATIVO = 'NEG' 
     AFIRMACION_SIMPLE = [ (POSITIVO, 'Positivo'), (NEGATIVO, 'Negativo')]
@@ -528,7 +553,7 @@ class Urgencias(models.Model):
     pam = models.IntegerField(default=0, verbose_name='PAM', help_text='No escriba aquí')
     
 
-# MAS SsVs
+ #  MAS SsVs
     dextrostix = models.IntegerField(blank=True, null=True, verbose_name='Dextrostix', default=0)
     temp =  models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Temp')
     peso = models.FloatField(blank=True, null=True, default=0, help_text='Si no puede pesar al paciente, calcule un aproximado') 
@@ -539,7 +564,7 @@ class Urgencias(models.Model):
     per_abdominal = models.IntegerField(blank=True, null=True, verbose_name='Per. Abd en cms')
 
 
-#COMPONENTE NEUROLOGICO
+ #COMPONENTE NEUROLOGICO
     A = 'Alerta'
     V = 'Respuesta Verbal'
     P = 'Respuesta al Dolor'
@@ -751,7 +776,7 @@ class Urgencias(models.Model):
 
 
 
-# REEVALUACIONES DE URGENCIAS
+ # REEVALUACIONES DE URGENCIAS
 
 class Urgencias_Reevaluaciones(models.Model):
     ev_2 = 'Segunda Evaluación'
@@ -765,7 +790,7 @@ class Urgencias_Reevaluaciones(models.Model):
     (ev_4, 'Cuarta Evaluación'), (ev_5, 'Quinta Evaluación'), (ev_6, 'Sexta Evaluación'), (ev_7, 'Séptima Evaluación'),
     (ev_8, 'Octava Evaluación')]
 
-#IDENTIFICACION Y ANTECEDENTES
+ #IDENTIFICACION Y ANTECEDENTES
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
     FEMENINO= 'FEM'
@@ -778,7 +803,7 @@ class Urgencias_Reevaluaciones(models.Model):
     dxs_previos = models.TextField(blank=True, null=True)
     sit_actual = models.TextField(blank=True, null=True, verbose_name='Situación Actual')
 
-#RESPIRATORIO
+ #RESPIRATORIO
     fr = models.IntegerField(default=0, blank=True, null=True, verbose_name='Frec. Resp')
     O2 = models.PositiveSmallIntegerField(default=0, blank=True, null=True, help_text='En litros/min si es el caso')
     saturacion = models.IntegerField(blank=True, null=True, verbose_name='Sa02', default=1)
@@ -849,7 +874,7 @@ class Urgencias_Reevaluaciones(models.Model):
         elif self.Rx_Torax == 4:
             return 'Presión Intratorácica: ' + str(self.Pinsp * 21)
 
-# GASES ARTERIALES
+ # GASES ARTERIALES
     pH = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=3)
     pCO2 = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True, help_text='mm/Hg', verbose_name='pCo2')
     pO2 = models.PositiveSmallIntegerField(blank=True, null=True, help_text='mm/Hg', verbose_name='pO2', default=1)
@@ -871,7 +896,7 @@ class Urgencias_Reevaluaciones(models.Model):
 
     compl_ex = models.TextField(blank=True, null=True, verbose_name='Complemente exploración torácica')
 
-#HEMODINAMICO
+ #HEMODINAMICO
     Diaforesis = models.CharField(max_length=100,choices=AFIRMACION_SIMPLE, blank=True, null=True )  
 
     fc = models.IntegerField(default=0, blank=True, null=True, verbose_name='FC')
@@ -923,7 +948,7 @@ class Urgencias_Reevaluaciones(models.Model):
     
 
 
-#MAS SsVs
+ #MAS SsVs
     dextrostix = models.IntegerField(blank=True, null=True, verbose_name='Dextrostix', default=0)
     temp =  models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2, verbose_name='Temp')
     peso = models.FloatField(blank=True, null=True, default=0, help_text='Si no puede pesar al paciente, calcule un aproximado') 
@@ -976,7 +1001,7 @@ class Urgencias_Reevaluaciones(models.Model):
     def fio2(self):
         return (3 * self.O2 + 21) / 100
 
-#NEUROLOGICO
+ #NEUROLOGICO
     #AVPU
     A = 'Alerta'
     V = 'Respuesta Verbal'
@@ -1057,7 +1082,7 @@ class Urgencias_Reevaluaciones(models.Model):
     eosinofilos = models.PositiveSmallIntegerField(blank=True, null=True)
     linfocitos = models.PositiveSmallIntegerField(blank=True, null=True)
 
-# LABORATORIO QS
+ # LABORATORIO QS
     glucosa = models.PositiveSmallIntegerField(blank=True, null=True)
     Urea = models.DecimalField(blank=True, null=True, max_digits=6, decimal_places=2)
     Creatinina = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
@@ -1067,7 +1092,7 @@ class Urgencias_Reevaluaciones(models.Model):
     TGO = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     bilirrTot = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
 
-#ELECTROLITOS
+ #ELECTROLITOS
     Na = models.PositiveSmallIntegerField(blank=True, null=True)
     K = models.PositiveSmallIntegerField(blank=True, null=True)
     Ca = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -1158,3 +1183,5 @@ class Urgencias_Reevaluaciones(models.Model):
     class Meta:
         ordering = ('-timestamp',)  
         verbose_name_plural='d) Urgencias, Evaluaciones Subsecuentes'
+
+
