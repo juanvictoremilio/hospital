@@ -15,13 +15,17 @@
     {% for paciente in paciente_list %}
       <div class="row mt-3">
         <div class="col-md-9 mx-auto">
-          <h4 style = "color:rgba(0, 0, 128, 0.805);"  class="mb-4">  {{paciente.name}}</h4>
+          <h4 style = "color:rgba(0, 0, 128, 0.805);"  href="{% url 'consultorio:paciente' paciente.id paciente.name|slugify %}"  class="mb-4">  {{paciente.name}}</h4>
           <div>
             <p>{{paciente.immediate_background|striptags|safe|truncatechars:"200"}}</p>
             {% if request.user.is_staff %}
-            <p><a href="{% url 'consultorio:paciente' paciente.id paciente.name|slugify %}">Resumen Clínico / Historia Clínica</a>
-              | <a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">Editar</a>
-              | <a href="{% url 'consultorio:eliminar paciente' paciente.id %}">Eliminar</a>
+            <p><a href="{% url 'consultorio:paciente' paciente.id paciente.name|slugify %}">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Resumen"></a>
+                <a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Editar"></a>
+                <a href="{% url 'consultorio:eliminar paciente' paciente.id %}">
+                  <input type="submit" class="btn btn-danger btn-sm" value="Eliminar">
+                </a>
               
                 
               <!--  | <a href="#">Borrar</a>

@@ -1,7 +1,6 @@
 from logging import PlaceHolder
 from django import forms
 from .models import Paciente, Reevaluacion, Urgencias, Urgencias_Reevaluaciones
-from django import forms
 
 class PacienteForm(forms.ModelForm):
     class Meta:

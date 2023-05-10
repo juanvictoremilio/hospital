@@ -32,8 +32,18 @@
            
           {% if request.user.is_staff %}
           
-            <p><a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">Editar</a></p>
+            <p ><a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">
+              <input type="submit" class="btn btn-primary btn-sm" value="Editar">
+              <a href="{% url 'consultorio:pacientes' %}">
+              <input type="submit" class="btn btn-secondary btn-sm" value="Regresar">
+            </a></p>
+
           {% endif %}
+          <br>
+
+          
+
+
         </div>
       </div>
     </div>
