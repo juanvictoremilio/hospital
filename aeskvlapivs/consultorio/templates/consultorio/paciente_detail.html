@@ -33,7 +33,7 @@
           {% if request.user.is_staff %}
           
             <p ><a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">
-              <input type="submit" class="btn btn-primary btn-sm" value="Editar">
+              <input type="submit" class="btn btn-secondary btn-sm" value="Editar">
               <a href="{% url 'consultorio:pacientes' %}">
               <input type="submit" class="btn btn-secondary btn-sm" value="Regresar">
             </a></p>
@@ -84,21 +84,47 @@
           <br>
           
           <h3 class="section-heading mb-4">Antecedentes Personales</h3>
-           <p>Tabaquismo: {{paciente.smoking}}, &nbsp; &nbsp;
-           Alcoholismo: {{paciente.alcohol}}, &nbsp; &nbsp;
-           Adicciones: {{paciente.drugs_adictions}} ,&nbsp; &nbsp;
-           Alergias: {{paciente.allergies}}, &nbsp; &nbsp;
-           Dislipidemia: {{paciente.dislipidemia}}, &nbsp; &nbsp;
-           Diabetes: {{paciente.dm}}, &nbsp; &nbsp;
-           HTA: {{paciente.hta}}, &nbsp; &nbsp;
-           Infartos o angina de pecho: {{pacienteinf_ang_de_pecho}}, &nbsp; &nbsp;
-           Eventos Cerebrovasculares: {{paciente.evc}}, &nbsp; &nbsp;
-           Insuficiencia vascular periférica: {{paciente.ivp}}, &nbsp; &nbsp;
-           Enfermedad Pulmonar Obstructiva Crónica: {{paciente.EPOC}},&nbsp; &nbsp;
-           Cáncer: {{paciente.cancer}},</P>
+           <p>
+                Tabaquismo: {{paciente.smoking}}, &nbsp; &nbsp;
+                Alcoholismo: {{paciente.alcohol}}, &nbsp; &nbsp;
+                Adicciones: {{paciente.drugs_adictions}} ,&nbsp; &nbsp;
+                Alergias: {{paciente.allergies}}, &nbsp; &nbsp;
+                Dislipidemia: {{paciente.dislipidemia}}, &nbsp; &nbsp;
+                Diabetes: {{paciente.dm}}, &nbsp; &nbsp;
+                HTA: {{paciente.hta}}, &nbsp; &nbsp;
+                Infartos o angina de pecho: {{pacienteinf_ang_de_pecho}}, &nbsp; &nbsp;
+                Eventos Cerebrovasculares: {{paciente.evc}}, &nbsp; &nbsp;
+                Insuficiencia vascular periférica: {{paciente.ivp}}, &nbsp; &nbsp;
+                Enfermedad Pulmonar Obstructiva Crónica: {{paciente.EPOC}},&nbsp; &nbsp;
+                Cáncer: {{paciente.cancer}}
+          </p>
+
+           <br>
+
+           <h3 class="section-heading mb-4">Antecedentes Ginecoobstétricos si es el caso</h3>
+           <p>
+                Menarca: {{paciente.Menarca}}, &nbsp; &nbsp;  FUR: {{paciente.FUR}}, &nbsp; &nbsp;  Gestas: {{paciente.Gestas}}, &nbsp; &nbsp;  
+                Partos: {{pacientes.Partos}}, &nbsp; &nbsp;  Cesáreas: {{paciente.Cesareas}}, &nbsp; &nbsp;
+                Ultimo Pappanicolaou: {{paciente.pap}},  &nbsp; &nbsp;  Ultima Mastografía: {{paciente.mast}}  
+           </p>
+
+           <p>
+            <b>
+              OBSERVACIONES GINECOOBSTETRICAS
+            </b>
+           </p>
+
+           <P>
+            {{paciente.obsgin}}
+           </P>
 
            <h3 class="section-heading mb-4">Complemento Otros antecedentes y Enfermedades</h3>
           <p>{{paciente.otras_enf}}</p>
+
+          <br>
+
+          <h3 class="section-heading mb-4">Lista de Medicamentos Actuales</h3>
+          <p>{{paciente.medications_list}}</p>
 
           <br>
           
@@ -130,8 +156,7 @@
 
             <br>
 
-            <h3 class="section-heading mb-4">CONSIDERACIONES ESPECIALES</h3>
-            <p> {{paciente.sp_consideration}} </p>
+            <p> <b> CONSIDERACIONES ESPECIALES: </b> <b style = 'color:darkgoldenrod'>  {{paciente.sp_consideration}} </b>  </p>
  
              <br> 
 

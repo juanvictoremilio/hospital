@@ -5,12 +5,11 @@ from . import views
 from .views import (PacienteListView, PacienteDetailView, PacienteCreate, PacienteUpdate, PacienteDeleteView, SearchResultsView, 
 SearchReevResultsView, ReevaluacionListView, ReevalucionDetailView, ReevaluacionUpdate, ReevaluacionCreate, ReevalucionDeleteView, SearchUrgenciasReevResultsView, 
 UrgenciasListView, UrgenciasCreate, UrgenciasDetailView, UrgenciasReevDetail, UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, 
-UrgenciasReevListView, UrgenciasReevDetail, SearchUrgenciasReevResultsView, UrgReevCreate, UrgenciasReevUpdate,UrgReevDelete
+UrgenciasReevListView, UrgenciasReevDetail, SearchUrgenciasReevResultsView, UrgReevCreate, UrgenciasReevUpdate, UrgReevDelete,
 )
 
 
 app_name = "consultorio"
-
 
 consultorio_patterns = ([
     path('', PacienteListView.as_view(), name='pacientes'), 

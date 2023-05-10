@@ -61,6 +61,8 @@ class PacienteListView(ListView):
 class PacienteDetailView(DetailView):
     model = Paciente
 
+class HistClinicaView(TemplateView):
+    template_name = "consultorio/hist_clinica.html"
     
 @method_decorator(staff_member_required, name='dispatch')
 class PacienteCreate(CreateView):
