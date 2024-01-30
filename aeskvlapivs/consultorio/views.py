@@ -44,6 +44,7 @@ def uploadFilePac(request):
 class SearchResultsView(ListView):
     model = Paciente
     template_name = 'search_results.html'
+    paginate_by = 10
 
     def get_queryset(self):  # new
         query = self.request.GET.get("q")
@@ -55,6 +56,7 @@ class SearchResultsView(ListView):
 class PacienteListView(ListView):
     model = Paciente
     template_name = 'paciente_list.html'
+    paginate_by = 10
     
     
 
