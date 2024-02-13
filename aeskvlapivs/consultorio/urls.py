@@ -5,7 +5,7 @@ from . import views
 from .views import (PacienteListView, PacienteDetailView, PacienteCreate, PacienteUpdate, PacienteDeleteView, SearchResultsView, 
 SearchReevResultsView, ReevaluacionListView, ReevalucionDetailView, ReevaluacionUpdate, ReevaluacionCreate, ReevalucionDeleteView, SearchUrgenciasReevResultsView, 
 UrgenciasListView, UrgenciasCreate, UrgenciasDetailView, UrgenciasReevDetail, UrgenciasUpdate, UrgenciasDeleteView, SearchUrgenciasResultsView, 
-UrgenciasReevListView, UrgenciasReevDetail, SearchUrgenciasReevResultsView, UrgReevCreate, UrgenciasReevUpdate, UrgReevDelete,
+UrgenciasReevListView, UrgenciasReevDetail, SearchUrgenciasReevResultsView, UrgReevCreate, UrgenciasReevUpdate, UrgReevDelete, HistClinica
 )
 
 
@@ -16,9 +16,11 @@ consultorio_patterns = ([
     path('create/', PacienteCreate.as_view(),name='nuevo_paciente'),
     path('<int:pk>/<slug:paciente_slug>/', PacienteDetailView.as_view(), name='paciente'),
     path('update/<int:pk>/', PacienteUpdate.as_view(),name='actualizar_paciente'),
-    path('delete/<int:pk>/', PacienteDeleteView.as_view(),name='eliminar paciente'),
+    path('delete/<int:pk>/', PacienteDeleteView.as_view(),name='eliminar_paciente'),
     path("search/", SearchResultsView.as_view(), name="search_results"),
-    path("upload_pac", views.uploadFilePac, name = "uploadFile_pac"),     
+    path("upload_pac", views.uploadFilePac, name = "uploadFile_pac"), 
+    
+    path('historia_clinica/ <int:pk>', HistClinica.as_view(), name='historia_clinica'),    
     
     path('reevaluaciones/', ReevaluacionListView.as_view(), name='reevaluaciones'),
     path('create_reev/', ReevaluacionCreate.as_view(),name='nueva_reevaluacion'),

@@ -1,182 +1,379 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}{{object.name}}{% endblock %}
+{% block title %}Resumen de Pimera Vez Paciente: {{paciente.name}}{% endblock %}
 {% block content %}
-{% include 'consultorio/includes/top_menu.html' %}
-<main role="main">
-  <div class="container">
-    <div class="row mt-3">
-      <div class="col-md-9 mx-auto">
-        <h2 class="section-heading mb-4">Resumen Clínico</h2>
-        <h4 class="section-heading mb-4">{{paciente.name}}</h4>
-        <div>
-          <p>Edad: {{paciente.age}}</p>
-           ANTECEDENTES INMEDIATOS: <p>{{paciente.immediate_background|linebreaks|safe}} </p>
-           OTROS ANTECEDENTES: <p>{{paciente.otras_enf|linebreaks}}</p>
-           LISTA DE MEDICAMENTOS ACTUALES: <P> {{paciente.medications_list}} </P>
-           EXPLORACION FISICA: <p>{{paciente.actual_situation |linebreaks}}</p>
-           SIGNOS VITALES: <p>FC {{paciente.fc}}, &nbsp; &nbsp;   TA {{paciente.tension_sistolica}}/{{paciente.tension_diastolica}}, &nbsp; &nbsp;    
-            PAM: {{paciente.pam}}, &nbsp; &nbsp;   FR: {{paciente.fr}},  &nbsp; &nbsp;  Temp: {{paciente.temp}}, &nbsp; &nbsp;   Sa02: {{paciente.saturation}}, &nbsp; &nbsp;
-            Dextrostix: {{paciente.dextrostix}}, &nbsp; &nbsp;   A1c: {{paciente.a1c}},  &nbsp; &nbsp;  Peso: {{paciente.peso}}, &nbsp; &nbsp;   Estatura: {{paciente.estatura}}, &nbsp; &nbsp;
-            IMC: {{paciente.imc}}, &nbsp; &nbsp;   Clasificación Masa Corporal: <b>{{paciente.climc}}</b>, &nbsp; &nbsp;   ASC: {{paciente.asc}}, &nbsp; &nbsp;   
-            Per. Abdominal: {{paciente.per_abdominal}} cms. </p>
-           OBSERVACIONES: <p>{{paciente.obs | linebreaks}}</p>
-           DXS: <p>{{paciente.diagnosis | linebreaks}}</p>
-           MANEJO: <p>{{paciente.txs | linebreaks}}</p>
-           INTERCONSULTANTE: <p>{{paciente.especialidad}}</p>
-           <p>ESPECIFIQUE OTRO INTERCONSULTANTE: {{paciente.esp_otro}} </p>
-           <p> <b> CONSIDERACIONES ESPECIALES: </b> <b style = 'color:darkgoldenrod'>  {{paciente.sp_consideration}} </b>  </p>
-           Fecha de Realización: <p>{{ paciente.timestamp }}</p>
-           Ultima Actualización: <p>{{ paciente.update }}</p>
 
-           
-          {% if request.user.is_staff %}
+  <body class="horizontal-layout horizontal-top-icon-menu 2-columns   menu-expanded" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+    <style type="text/css">
+      .animate__animated.animate__fadeIn {
+        --animate-duration: 2.0s;
+      }
+      .lead.shadow-text {
+        text-shadow: 2px 1px 4px rgba(0, 0, 0, 0.5); /* Adjust as needed */
+      }
+      .breadcrumb-item a {
+          text-decoration: none;
+          color: inherit;
+      }
+      .breadcrumb-item a:hover {
+          text-decoration: none;
+          color: inherit;
+      }
+      /* CSS: estilos para el botón de regresar arriba */
+      #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 50%;
+        font-size: 18px;
+        width: 50px;
+        height: 50px;
+        line-height: 20px;
+        opacity: 0; 
+        transition: opacity 1s; 
+      }
+
+      #myBtn:hover {
+        background-color: #555; 
+      }
+
+      #myBtn.show {
+        display: block;
+        opacity: 1; 
+      }
+    </style>
+    <div class="app-content content" style="padding-top: 70px;">
+      <div class="content-wrapper animate__animated animate__fadeIn">
+        <div class="container">
+          <div class="content-header row align-items-center justify-content-center">
+            <div class="content-header-left col-md-6 col-12">
+              <h3 class="content-header-title"><b>Resumen Clínico de Primera Vez
+              </b>	</h3>
+              <div class="row breadcrumbs-top">
+                <div class="breadcrumb-wrapper col-12">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item lead "><a href="{% url 'home' %}">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item lead "><a href="{% url 'consultorio:pacientes' %}">Pacientes</a>
+                    </li>
+                    <li class="breadcrumb-item lead active">Resumen clinico
+                    </a>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="content-header-right col-md-6 col-12">
+              <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group" role="group">
+                  <button onclick="printDiv('printableArea')" type="button" class="btn btn-outline-dark btn-lg mb-1 ladda-button" data-style="expand-left" data-size="l">
+                    <span class="ladda-label"> <b>Imprimir</b> 
+                  </button>
+                  <button data-href="{% url 'consultorio:historia_clinica' paciente.id %}" onclick="redirectToUrl(this);" type="submit" class="btn btn-outline-dark btn-lg mb-1 ladda-button" data-style="expand-left" data-size="l">
+                    <span class="ladda-label"> <b>Historia clínica</b> 
+                  </button>
+                  <div class="btn-group">
+                    <button
+                      class="btn btn-dark btn-lg dropdown-toggle mb-1 ladda-button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-settings"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="{% url 'consultorio:actualizar_paciente' paciente.id %}">Actualizar datos</a>
+                      <a class="dropdown-item" href="{% url 'consultorio:eliminar_paciente' paciente.id %}">Eliminar paciente</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="printableArea" class="content" style="padding-top: 60px; padding-bottom: 60px;">
+            <div  class="col-lg-12 card border-0 border-lighten-3 m-0 box-shadow-2 p-0 align-items-center justify-content-center">
+              <div class="row">
+                <!-- Columna para el logo -->
+                <div class="col-md-4">
+                  <img class="text-left pt-1" src="{% static 'core/img/logoFactura.png' %}" style="width: 100%;" alt="branding logo">
+                </div>
+                
+                <!-- Columna para el texto a la derecha del logo -->
+                <div class="col-md-8">
+                  <div class="text-right pt-3">
+                    <h4><b>Dr. Juan Víctor Emilio Sánchez </b></h4>
+                    <h4><b>UABC</b></h4>
+                    <h5>CP 1643960 </h5>
+                    <h5>SSA/2705  Aut 2805 </h5>
+                    <h5>Fecha de registro: {{paciente.timestamp}}</h5>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-10 card-content" style="padding-top: 60px;">
+                <div class="card-body row">
+                  <h3 class="section-heading mb-4"><b>Resumen Clínico</b></h3>
+                </div>
+                <div class="card-body row">
+                  <h4 class="section-heading mb-4"><b>Paciente:</b> {{paciente.name}}</h4>
+                </div>
+                  <div>
+                    <p><b>  </b></p>
+                    <table  class="table table-responsive" style="width: 100%;">
+                      <thead>
+                        <tr>
+                          <th width="20%" align="right">Diagnósticos</th>
+                          <th width="15" align="right">Medicamentos</th>
+                          <th width="10%" align="rigth">Alergias</th>
+                          <th width="25%" align="right">Antecedentes Previos</th>
+                          <th width="30%" align="right">Observaciones Especiales</th>
+                        </tr>
+                      </thead> 
+                      <tbody>
+                          <tr>
+                            <td style="color:rgb(11, 7, 120);" class="mb-4">                      
+                              <b>
+                                {{paciente.diagnosis | linebreaks}}
+                              </b>                      
+                            </td>
+
+                            <td style="color:rgb(11, 7, 120);" class="mb-4">
+                                {{paciente.medications_list | linebreaks}} 
+                            </td>
+
+                            <td style="color:rgb(11, 7, 120);" class="mb-4">
+                                {% if paciente.allergies %} {{paciente.allergies}} {% else %} &nbsp; {% endif %}
+                            </td>
+                            
+                            <td style="color:rgb(11, 7, 120);" class="mb-4">                     
+                              
+                                {% if paciente.tab %} {{paciente.tab}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.alc %} {{paciente.alc}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.drugs %} {{paciente.drugs}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.disl %} {{paciente.disl}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.diab %} {{paciente.diab}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.hipert %} {{paciente.hipert}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.ins_ren  %} {{paciente.ins_ren }}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.card  %} {{paciente.card }}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.encef %} {{paciente.encef}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.ins_vasc %} {{paciente.ins_vasc}}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.pulm  %}{{paciente.pulm }}, {% else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.canc %} {{paciente.canc}}, {% else %} &nbsp; {% endif %}
+
+                                {% if paciente.otras_enf %} {{paciente.otras_enf}}, {% else %} &nbsp; {% endif %}
+
+
+
+
+                            </td>    
+
+                            <td style="color:darkgoldenrod"; class="mb-4">
+
+                                {% if paciente.climc %} {{paciente.climc}} {%else %} &nbsp; {% endif %}
+                                
+                                {% if paciente.htn %} {{paciente.htn}}, {% else %}  &nbsp;  {% endif %}
+                                
+                                {% if paciente.sepsis %} {{paciente.sepsis}}, {% else %} &nbsp; {% endif %}
+                              
+                              </td>   
+                          </tr>
+                      </tbody>
+                    </table>
+
+                    <p><b>Edad:</b> {{paciente.age}}</p>
+                      <b>ANTECEDENTES INMEDIATOS (Razón de evaluación):</b> 
+                        <p>{{paciente.immediate_background|linebreaks|safe}} </p>
+                      <b>OTROS ANTECEDENTES:</b> 
+                        <p>{{paciente.otras_enf|linebreaks}}</p>
+                      <b>LISTA DE MEDICAMENTOS ACTUALES:</b> 
+                        <p> {{paciente.medications_list | linebreaks}} </P>
+                      <b>EXPLORACION FISICA:</b> 
+                        <p>{{paciente.actual_situation |linebreaks}}</p>
+                      <b>SIGNOS VITALES:</b>   
+                      <div>
+                        <table  class="table table-responsive">
+                          <thead>
+                            <tr>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">FC</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">TA</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">PAM</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">FR</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">SaO2</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">Temp</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">Dextrostix</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">A1c</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">Peso</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">Estatura</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">IMC</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">ASC</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">Per. Abdom</th>
+                              <th style="color:rgb(11, 7, 120);" class="mb-4">Clas. Masa Corp</th>
+                            </tr>
+                          </thead> 
           
-            <p ><a href="{% url 'consultorio:actualizar_paciente' paciente.id %}">
-              <input type="submit" class="btn btn-secondary btn-sm" value="Editar">
-              <a href="{% url 'consultorio:pacientes' %}">
-              <input type="submit" class="btn btn-secondary btn-sm" value="Regresar">
-            </a></p>
+                          <tbody>
+                            <tr>
+                              <td >
+                                {% if paciente.fc %} {{paciente.fc}} {% else %} &nbsp; {% endif %}
+                              </td>
 
-          {% endif %}
-          <br>
+                              <td>
+                                  {% if paciente.tension_sistolica %}
+                                  {% if paciente.tension_diastolica %}
+                                  {{ paciente.tension_sistolica }}/{{ paciente.tension_diastolica }}
+                                  {% else %}
+                                    <td>&nbsp;
+                                  {% endif %}
+                                  {% else %}
+                                    &nbsp;
+                                  {% endif %}
+                              </td>
+                              
+                              <td>
+                                  {% if paciente.pam %} {{paciente.pam}} {% else %} &nbsp; {% endif %}
+                              </td>
 
+                              <td>
+                                  {% if paciente.fr %} {{paciente.fr}} {% else %} &nbsp; {% endif %}
+                              </td> 
+                                  
+                              <td>
+                                {% if paciente.saturacion %} {{paciente.saturacion}} {% else %} &nbsp; {% endif %}
+                              </td>     
+                                
+                              <td>
+                                {% if paciente.temp %} {{paciente.temp}} {% else %} &nbsp; {% endif %}
+                              </td>     
+                                
+                              <td>
+                                {% if paciente.desctrostix %} {{paciente.dextrostix}} {% else %} &nbsp; {% endif %}
+                              </td>  
+                                
+                              <td>
+                                {% if paciente.a1c %} {{paciente.a1c}} {% else %} &nbsp; {% endif %}
+                              </td>  
+                                
+                              <td>
+                                {% if paciente.peso %} {{paciente.peso}} {% else %} &nbsp; {% endif %}
+                              </td>    
+                              
+                              <td>
+                                {% if paciente.estatura %} {{paciente.estatura}} {% else %}  &nbsp; {% endif %}
+                              </td>  
+                                
+                              <td>
+                                {% if paciente.imc %} {{paciente.imc}} {% else %}  &nbsp; {% endif %}
+                              </td>  
+                                
+                              <td>
+                                {% if paciente.asc %} {{paciente.asc}} {% else %} &nbsp;  {% endif %}
+                              </td>    
+                                
+                              <td>
+                                {% if paciente.per_abdominal %} {{paciente.per_abdominal}} {% else %}  &nbsp;  {% endif %}
+                              </td>   
+                                
+                              <td>
+                                {% if paciente.climc %} {{paciente.climc}} {%else %} &nbsp; {% endif %}
+                              </td>   
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+
+                      <b>OBSERVACIONES:</b> 
+                        <p>{{paciente.obs | linebreaks}}</p>
+
+                      <b>DXS:</b> 
+                        <p>{{paciente.diagnosis | linebreaks}}</p>
+
+                      <b>MANEJO:</b> 
+                        <p>{{paciente.txs | linebreaks}}</p>
+
+                      <b>PLAN</b> 
+                        <P>{{paciente.adendums | linebreaks}}</P>
+
+                      <b>INTERCONSULTANTE:</b> 
+                        <p>{{paciente.especialidad}}</p>
+
+                      <p><b>ESPECIFIQUE OTRO INTERCONSULTANTE:</b> {% if paciente.esp_otro %} {{paciente.esp_otro}} {% else %} &nbsp; {% endif %} </p>
+                      
+                      Fecha de Realización: <p>{{ paciente.timestamp }}</p>
+                      Ultima Actualización: <p>{{ paciente.update }}</p>
           
-
-
+                      
+                    {% if user.is_authenticated %}
+                      
+                    {% endif %}
+                    <br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</main>
+    <!-- BOTON REGRESAR ARRIBA -->
+    <button onclick="topFunction()" id="myBtn" title="Ir arriba">^</button>
+    <!-- IMPRIMIR -->
+    <script type="text/javascript">
+      function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+  
+        document.body.innerHTML = printContents;
+  
+        window.print();
+  
+        document.body.innerHTML = originalContents;
+      }
+    </script>
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- JS BOTON REGRESAR ARRIBA -->
+    <script>
+      let mybutton = document.getElementById("myBtn");
+      window.onscroll = function() {scrollFunction()};
 
+      function scrollFunction() {
+        if (document.body.scrollTop > 120 || document.documentElement.scrollTop > 120) {
+          mybutton.classList.add('show'); // Añade la clase "show"
+        } else {
+          mybutton.classList.remove('show'); // Quita la clase "show"
+        }
+      }
 
-{% include 'consultorio/includes/historia_clinica.html' %}
-<main role="main">
-  <div class="container">
-    <div class="row mt-3">
-      <div class="col-md-9 mx-auto">
-        <h2 class="section-heading mb-4" ALIGN="center">HISTORIA CLINICA</h2>
-        <h3 class="section-heading mb-4" >Identificación</h3>
-        <h4 class="section-heading mb-4">{{paciente.name}}</h4>
-        <div>
-          <p><b>Género:</b>{{paciente.gender}}, &nbsp; &nbsp; &nbsp;
-             <b>Edad:</b> {{paciente.age}},&nbsp; &nbsp; &nbsp;
-             <b>Nacionalidad y Lugar de Nacimiento:</b> {{paciente.nationality}} &nbsp; &nbsp; &nbsp;
-             <b>Etnia:</b> {{paciente.etnia}}</p>
-          <p><b>Escolaridad:</b> {{paciente.scholarship}}, &nbsp; &nbsp; &nbsp;
-             <b>Empleo:</b> {{paciente.job}}, &nbsp; &nbsp; &nbsp;
-             <b>Religión: </b>{{paciente.religion}}, &nbsp; &nbsp; &nbsp;
-             <b>Deportes:</b> {{paciente.sport}}, &nbsp; &nbsp; &nbsp;
-          <p><b>Estado Civil:</b> {{paciente.civil_status}},
-             <b>Domicilio:</b> {{paciente.adress}}, &nbsp; &nbsp; &nbsp;
-             <b>Email:</b> {{paciente.email}}, &nbsp; &nbsp; &nbsp;
-             <b>Teléfono: </b>{{paciente.phone}}</p>
-          <p><b>Derechohabiencia:</b> {{paciente.entitlement}}, &nbsp; &nbsp; &nbsp;
-             <b>Otra Derechohabiencia: </b>{{paciente.specify}},&nbsp; &nbsp; &nbsp;
-          <p class="section-heading mb-10"><b>Aseguradora:</b> {{paciente.insurance}}</p>
-          
-          <br>
-
-          <h3 class="section-heading mb-4">Antecedentes inmediatos o Padecimiento Actual</h3>         
-          <p> {{paciente.immediate_background|linebreaks|safe}} </p>
-
-          <br>
-          
-          <h3 class="section-heading mb-4">Antecedentes Personales</h3>
-           <p>
-                Tabaquismo: {{paciente.smoking}}, &nbsp; &nbsp;
-                Alcoholismo: {{paciente.alcohol}}, &nbsp; &nbsp;
-                Adicciones: {{paciente.drugs_adictions}} ,&nbsp; &nbsp;
-                Alergias: {{paciente.allergies}}, &nbsp; &nbsp;
-                Dislipidemia: {{paciente.dislipidemia}}, &nbsp; &nbsp;
-                Diabetes: {{paciente.dm}}, &nbsp; &nbsp;
-                HTA: {{paciente.hta}}, &nbsp; &nbsp;
-                Infartos o angina de pecho: {{pacienteinf_ang_de_pecho}}, &nbsp; &nbsp;
-                Eventos Cerebrovasculares: {{paciente.evc}}, &nbsp; &nbsp;
-                Insuficiencia vascular periférica: {{paciente.ivp}}, &nbsp; &nbsp;
-                Enfermedad Pulmonar Obstructiva Crónica: {{paciente.EPOC}},&nbsp; &nbsp;
-                Cáncer: {{paciente.cancer}}
-          </p>
-
-           <br>
-
-           <h3 class="section-heading mb-4">Antecedentes Ginecoobstétricos si es el caso</h3>
-           <p>
-                Menarca: {{paciente.Menarca}}, &nbsp; &nbsp;  FUR: {{paciente.FUR}}, &nbsp; &nbsp;  Gestas: {{paciente.Gestas}}, &nbsp; &nbsp;  
-                Partos: {{pacientes.Partos}}, &nbsp; &nbsp;  Cesáreas: {{paciente.Cesareas}}, &nbsp; &nbsp;
-                Ultimo Pappanicolaou: {{paciente.pap}},  &nbsp; &nbsp;  Ultima Mastografía: {{paciente.mast}}  
-           </p>
-
-           <p>
-            <b>
-              OBSERVACIONES GINECOOBSTETRICAS
-            </b>
-           </p>
-
-           <P>
-            {{paciente.obsgin}}
-           </P>
-
-           <h3 class="section-heading mb-4">Complemento Otros antecedentes y Enfermedades</h3>
-          <p>{{paciente.otras_enf}}</p>
-
-          <br>
-
-          <h3 class="section-heading mb-4">Lista de Medicamentos Actuales</h3>
-          <p>{{paciente.medications_list}}</p>
-
-          <br>
-          
-          <h3 class="section-heading mb-4" >Exploración Física</h3>
-          <p>{{paciente.actual_situation |linebreaks}}</p>
-
-          <br>
-
-           <b>SIGNOS VITALES:</b> <p>FC {{paciente.fc}}, &nbsp; &nbsp;   TA {{paciente.tension_sistolica}}/{{paciente.tension_diastolica}}, &nbsp; &nbsp;    
-            PAM: {{paciente.pam}}, &nbsp; &nbsp;   FR: {{paciente.fr}},  &nbsp; &nbsp;  Temp: {{paciente.temp}}, &nbsp; &nbsp;   Sa02: {{paciente.saturation}}, &nbsp; &nbsp;
-            Dextrostix: {{paciente.dextrostix}}, &nbsp; &nbsp;   A1c: {{paciente.a1c}},  &nbsp; &nbsp;  Peso: {{paciente.peso}}, &nbsp; &nbsp;   Estatura: {{paciente.estatura}}, &nbsp; &nbsp;
-            IMC: {{paciente.imc}}, &nbsp; &nbsp;   Clasificación Masa Corporal: {{paciente.climc}}, &nbsp; &nbsp;   ASC: {{paciente.asc}}, &nbsp; &nbsp;   
-            Per. Abdominal: {{paciente.per_abdominal}} cms. </p>
-
-            <br>
-
-            <h3 lass="section-heading mb-4">OBSERVACIONES</h3>
-             <p>{{paciente.obs | linebreaks}}</p>
-
-             <br>
-
-             <h3 class="section-heading mb-4">DIAGNOSTICOS</h3>
-             <p>{{paciente.diagnosis | linebreaks}}</p>
-
-             <br>
-
-           <h3 class="section-heading mb-4">MANEJOS Y TRATAMIENTOS</h3>
-           <p>{{paciente.txs | linebreaks}}</p>
-
-            <br>
-
-            <p> <b> CONSIDERACIONES ESPECIALES: </b> <b style = 'color:darkgoldenrod'>  {{paciente.sp_consideration}} </b>  </p>
- 
-             <br> 
-
-           <h3 class="section-heading mb-4">ADENDUMS</h3>
-           <P>{{paciente.adendums | linebreaks}}</P>
-
-            <br>
-
-           <p><b>Fecha de Realización:</b> {{ paciente.timestamp }}</p>
-           <p><b>Última Actualización:</b> {{ paciente.update }}</p>
-
-           
-          {% if request.user.is_staff %}
-          
-           
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
+      function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+      }
+    </script>
+    <!-- NAVEGACION EN BOTONES SIN <a> -->
+    <script>
+      function redirectToUrl(button) {
+          var url = button.getAttribute('data-href');
+          if (url) {
+              window.location.href = url;
+          }
+      }
+  </script>
+</body>
 {% endblock %}
+
+
 
